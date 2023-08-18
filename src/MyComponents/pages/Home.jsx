@@ -7,7 +7,7 @@ function Home() {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
       </style>
-      {/* Container 1 :  */}
+                                     {/* Container 1 :  */}
 
 
       <div className=".container-fluid overflow1">
@@ -17,9 +17,9 @@ function Home() {
         <p className="web-title">Wedding.com</p>
       </div>
 
-      {/* container 3 */}
+                                {/* container 3 */}
 
-      {/* PC-View */}
+                                  {/* PC-View */}
 
       <div id="carouselExampleIndicators" className="carousel slide pc-carousal" data-bs-ride="carousel">
         {/* <div className="carousel-indicators">
@@ -127,7 +127,7 @@ function Home() {
           <span className="visually-hidden">Next</span>
         </button>
 
-        {/* Mobile View */}
+                                  {/* Mobile View */}
 
       </div>
       <div id="carouselExampleControls" className="carousel slide mobile-carousal" data-bs-ride="carousel">
@@ -170,22 +170,19 @@ function Home() {
           </div>
 
         </div>
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <button className="carousel-control-prev arrow-btn-cir1" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Previous</span>
         </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <button className="carousel-control-next arrow-btn-cir2" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>
 
-      {/* Container 4 */}
+                                {/* Container 4 */}
 
       <h1 className="container4-heading">POPULAR VENUES SEARCHES</h1>
-
-                     {/* Sub-Container 1 */}
-
       <div className="container ">
         <div className="row">
           <div className="col-md-6 ">
@@ -395,7 +392,7 @@ const Wrapper = styled.section`
 
 .about-us {
     height: 10px;
-    width:105%;
+    width:102%;
     margin-bottom:400px;
     margin-top:60px;
   }
@@ -410,7 +407,6 @@ const Wrapper = styled.section`
   
   .image-container img {
     max-width: 100%;
-
     height: 320px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -546,11 +542,9 @@ const Wrapper = styled.section`
   }
   .image-container{
     width:400px;
-    
   }
   .image-container img {
     max-width:120%;
-    
     height: 330px;
     margin-left:-40px;
     margin-top:-40px;
@@ -568,6 +562,23 @@ const Wrapper = styled.section`
   .about-us{
      margin-bottom:700px;
   }
+  .arrow-btn-cir1{
+    background-color:black;
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin-top:158px;
+    margin-left:8px;
+  }
+  .arrow-btn-cir2{
+    background-color:black;
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin-top:158px;
+    margin-right:8px;
+  }
+  
   
  
 }                     

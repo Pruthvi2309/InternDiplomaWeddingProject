@@ -7,7 +7,7 @@ function Venue() {
     <div className="super-cont">
       <div className='container'>
       <div className='container cont'>
-          <div className='row'>
+          <div className='row wid'>
             <div className='col-md-6'>
               <div className="title">Venue Name</div>
             </div>
@@ -35,20 +35,20 @@ function Venue() {
           </div>
           <div className='row g-0 cont2'>
             <div className="col-md-3">
-              <button className="btn btn-primary">Photos</button>
+              <button className="btn btn-primary btn1">Photos</button>
             </div>
             <div className="col-md-3">
-              <button className="btn btn-primary ">Shortlist</button>
+              <button className="btn btn-primary btn2">Shortlist</button>
             </div>
             <div className="col-md-3">
-              <button className="btn btn-primary" disabled>Write a review</button>
+              <button className="btn btn-primary btn3 " disabled>Review</button>
             </div>
             <div className="col-md-3">
-              <button className=" btn-no-border">Share</button>
+              <button className=" btn-no-border btn1">Share</button>
             </div>
           </div>
-          <div className="row">
-          <div className="cont5">
+          <div className="row ">
+          <div className="cont5 pc-photos">
               <div className="row">
                 <div className="col-md-12">
                     <div className="photos-title">Photos</div>
@@ -96,13 +96,58 @@ function Venue() {
                     </div>
                     <div className='row'>
                       <div className='col-md-12 center'>
-                        <button type="button" className="btn btn-outline-primary">View More</button>
+                        <button type="button" className="btn">View More</button>
                       </div>
                     </div>
                   </div>
               </div>
             </div>
           </div>
+
+
+
+
+                                          {/* Mobile View */}
+
+        <div className="cont5 mobile-photos">
+              <div className="row">
+                <div className="col-md-12">
+                    <div className="photos-title">Photos</div>
+                    <div className='row images'>
+                      <div className='col-md-6 img1'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                      <div className='col-md-6 img2'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                    </div>
+                    <div className='row images'>
+                      <div className='col-md-6 img1'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                      <div className='col-md-6 img2'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                    </div>
+                    <div className='row images'>
+                      <div className='col-md-6 img1'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                      <div className='col-md-6 img2'>
+                        <img src="images/v1.jpg" className='image-thumbnail'></img>
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <div className='col-md-12 center'>
+                        <button type="button" className="btn">View More</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+
+
         
         </div>
         <div className='row'>
@@ -115,7 +160,7 @@ function Venue() {
                       <div className="accordion" id="accordionExample">
                         <div className="accordion-item">
                           <h2 className="accordion-header" id="headingOne">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button className="accordion-button collapsed req" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                               Pricing Info
                             </button>
                           </h2>
@@ -142,7 +187,7 @@ function Venue() {
                         </div>
                         <div className="accordion-item">
                           <h2 className="accordion-header" id="headingTwo">
-                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button className="accordion-button req" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                               Check Availability
                             </button>
                           </h2>
@@ -236,7 +281,7 @@ function Venue() {
                         </div>
                         <div className="accordion-item">
                           <h2 className="accordion-header" id="headingThree">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <button className="accordion-button collapsed req" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                               Request Booking
                             </button>
                           </h2>
@@ -377,6 +422,11 @@ function Venue() {
                 Review Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo omnis ea voluptate quae sint blanditiis officia excepturi, possimus eaque asperiores!  
               </div>
             </div>
+             <div className='row'>
+                      <div className='col-md-12 center'>
+                        <button type="button" className="btn">View More</button>
+                      </div>
+                    </div>
           </div>
           </div>
         </div>
@@ -617,6 +667,141 @@ const Wrapper = styled.section`
       bottom:0px;
       left:0;
     }
-    
+    .pc-photos{
+      display:block;
+    }
+    .mobile-photos{
+      display:none;
+    }
+    @media only screen and (max-width:768px){
+      .pc-photos{
+        display:none;
+      }
+      .mobile-photos{
+        display:block;
+      }
+      .venue-img{
+        width:380px;
+        height:300px;
+        padding-top:40px;
+      }
+      .cont{
+        position:absolute;
+        background-color:#f0f0f0;
+        margin-top:300px;
+        margin-left:0px;
+        width:380px;
+        height:250px;
+        border-radius:2px;
+      }
+      .cont .btn{
+        border-radius:0px;
+        width:100px;
+        text-align:center;
+        background-color:#fff;
+        border-width:0px;
+        color:black;
+        border-right-width:1pt;
+        border-color:gray;
+      }
+      .venue{
+        margin-top:240px;
+        margin-left:-100px;
+      }
+      .price{
+        width:380px;
+
+      }
+      .wid{
+        width:200px;
+      }
+     
+      .btn1{
+          position:absolute;
+          margin-left:0px;
+          margin-top:-30px;
+        z-index:2;
+
+      }
+      .btn2{
+        position:absolute;
+        margin-left:100px;
+        margin-top:-30px;
+        z-index:2;
+        
+      }
+      .btn3{
+        position:absolute;
+        margin-top:-30px;
+        margin-left:200px;
+        z-index:2;
+        
+      }
+      .btn-no-border{
+        position:absolute;
+        width:100px;
+        margin-left:300px;
+        margin-top:-30px;
+        background-color:#fff;
+        z-index:2;
+      }
+      .rating{
+        position:absolute;
+
+      }
+      .accordion-body{
+        z-index:3;
+      }   
+      .cont2{
+        margin-bottom:10px;
+        margin-left:5px;
+      }
+      
+      // About us
+      .cont4{
+        position:absolute;
+        margin-top:20px;
+        height:540px;
+        width:380px;
+      }
+      .about-description{
+      }
+      // photos
+      .cont5{
+        position:absolute;
+        margin-top:980px;
+        height:670px;
+        margin-left:-15px;
+        width:102%;
+      }
+      .img1{
+        padding-right:0px;
+      }
+      .img2{
+        margin-left:190px;
+        margin-top:-150px;
+        padding-left:0px;
+      }
+      .image-thumbnail{
+        width:150px;
+        margin-left:15px;
+      }
+      .images{
+        width:350px;
+        margin-bottom:10px;
+      }
+      // Rating and Reviews
+      .cont6{
+        position:relative;
+        margin-top:1270px;
+        margin-left:0px;
+        width:380px;
+      }
+      // Requriements
+      .req{
+        position:relative;
+      }
+
+    }
 `
 export default Venue

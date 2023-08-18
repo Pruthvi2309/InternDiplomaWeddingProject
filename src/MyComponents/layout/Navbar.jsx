@@ -146,41 +146,6 @@ function Navbar() {
                       </div>
                      </li>
 
-                                              {/* Photos */}
-
-                     {/* <li className="nav-item">
-                     <div className="dropdown-container">
-                        <button className="dropdown-button">Photos</button>
-                        <div className="dropdown-content photos"> */}
-                          {/* row1 */}
-                          {/* <div className="row">
-                             <div className="col-md-4 ">
-                                 <div className="in-drop">Outfit</div>
-                                 <a>Bridal Lehenga</a>
-                                 <a>Wedding Sarees</a>
-                                 <a>Engagement</a>
-                                 <a>Mehndi</a>
-                                 <a>Blouse Designs</a>
-                                 <a><b>More</b></a>
-                             </div>
-                             <div className="col-md-4 g-0">
-                                 <div className="in-drop">Jewellery & Accessories</div>
-                                 <a>Bridal Jewellery</a>
-                                 <a>Engagement Rings</a>
-                                 <a>Floral Jewellery</a>
-                                 <a><b>More</b></a>
-                             </div>
-                             <div className="col-md-4 g-0">
-                                 <div className="in-drop">Wedding Photography</div>
-                                 <a>Pre Wedding Shoot</a>
-                                 <a>Wedding</a>
-                                 <a>Wedding Photoshoot & Poses</a>
-                                 <a><b>More</b></a>
-                             </div>
-                          </div>
-                        </div>
-                      </div>
-                     </li> */}
 
                                            {/* Abouts Us */}
 
@@ -199,10 +164,21 @@ function Navbar() {
 
                                       {/* Resigter & Login Buttons */}
 
-           <form className="d-flex">
-               <NavLink to="/Signup"><button className="btn  my-2 my-sm-0" type="submit">Register</button></NavLink>
-               <NavLink to="/Login"><button className="btn  btn-splite my-2 my-sm-0" type="submit">Login</button></NavLink>
+           <form>
+               <NavLink to="/Signup"><button className="btn btn-reg my-2 my-sm-0" type="submit">Register</button></NavLink>
+               <NavLink to="/Login"><button className="btn  btn-log my-2 my-sm-0" type="submit">Login</button></NavLink>
            </form>
+          
+           <div className="nav-item dropdown width">
+             <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="images/profile.png"/>
+            <div className="dropdown-menu" data-popper-placement="bottom-start">
+                  <a className="dropdown-item" href="#">My Profile</a>
+                  <a className="dropdown-item" href="#">Custom Packages</a>
+                  <a className="dropdown-item" href="#">Booking Requests</a>
+                  <div className="dropdown-divider"></div>
+                  <a className="dropdown-item" href="#">Settings</a>
+            </div>
+          </div>
          </div>
         </div>
       </nav>
@@ -210,6 +186,7 @@ function Navbar() {
   )
 }
 const Wrapper= styled.section`
+
 
                               //Navbar-WebsiteLogo
 .logo{
@@ -261,13 +238,9 @@ const Wrapper= styled.section`
 .mobile{
   display:block;
 }
-//                             // Navbar-Photos
-// .photos{
-//   width:700px;
-//   height:200px;
-// }
+
                             //Navbar - About Us & Contact Us
-.aboutus,.contactus{
+.aboutus{
   border:none;
   background-color:#e61041;
   padding-left:30px;
@@ -280,40 +253,9 @@ const Wrapper= styled.section`
   padding-left:30px;
   margin-top:8px;
 }
-/* Show the dropdown content when the button is hovered */
-.dropdown-container:hover .dropdown-content{
-  display: block;
-}
-
-@media only screen and (max-width:768px){
-  .aboutus{
-    border:none;
-    background-color:#e61041;
-    color:white;
-    text-align:justify;
-    margin-top:10px;
-    margin-left:10px;
-    margin-bottom:10px;
-    padding-left:8px;
-  }
-  .contactus{
-     padding-left:15px;
-     padding-bottom:20px;
-  }
-  .nav-icon{
-    margin-right:10px;
-  }
-  .bg{
-    width:410px;
-  }
-  .dropdown-container:hover .dropdown-content{
-    display: none;
-  }
-}
-                            // SearchBar
-
-
                          
+                                  // SearchBar
+                        
 .searchbar{
   width:200px;
 }
@@ -328,14 +270,29 @@ const Wrapper= styled.section`
 
                             //Navbar-Register & Login Buttons
 .btn{
-  background-color:#e61041;
-  // border:1px solid;  
+  background-color:#e61041; 
   color:white;
 }
-.btn-splite{
+.btn-log{
   margin-left:10px;
+  margin-right:5px;
 }
 
+                                  // Settings
+      
+dropdown-menu{
+  min-width:0px;
+  width:140px;
+  margin-left:-90px;
+  font-size:14px;
+}
+.dropdown-item{
+  padding-left:10px;
+}
+.iconlog{
+  max-width:45px;
+  max-height:45px;
+}
                               // Navbar - Dropdown
 
 /* Basic styling for the dropdown button and content */
@@ -365,11 +322,10 @@ const Wrapper= styled.section`
   font-family: 'REM', sans-serif; 
   font-size:16px;
 }
-
-
-
-
-
+/* Show the dropdown content when the button is hovered */
+.dropdown-container:hover .dropdown-content{
+  display: block;
+}
 /* Optional: Style the individual items in the dropdown */
 .dropdown-content a {
   display: block;
@@ -382,6 +338,62 @@ const Wrapper= styled.section`
 .dropdown-content a:hover {
   background-color: #ddd;
 }
+
+@media only screen and (max-width:768px){
+  .aboutus{
+    border:none;
+    background-color:#e61041;
+    color:white;
+    text-align:justify;
+    margin-top:10px;
+    margin-left:10px;
+    margin-bottom:10px;
+    padding-left:8px;
+  }
+  .contactus{
+     padding-left:15px;
+     padding-bottom:20px;
+  }
+  .search{
+    margin-left:10px;
+  }
+  .nav-icon{
+    margin-right:10px;
+  }
+  .bg{
+    width:410px;
+  }
+  .dropdown-container:hover .dropdown-content{
+    display: none;
+  }
+  .dropdown-menu{
+    min-width:0px;
+    width:174px;
+    height:200px;
+    margin-left:220px;
+    font-size:20px;
+  }
+  .dropdown-item{
+    padding-left:10px;
+  }
+  .iconlog{
+    max-width:92px;
+    max-height:67px;
+    margin-left:316px;
+    margin-top:-52px;
+  }
+  .btn-reg{
+    z-index:3;
+  }
+  .btn-log{
+    z-index:3;
+  }
+  .width{
+    width:20px;
+  }
+  
+}
+
 
 `
 

@@ -14,7 +14,7 @@ function Venues() {
       <>
         <div className="top-container">
 
-          <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+          <button className="btn btn-primary filt" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
 
             Filters
           </button>
@@ -36,23 +36,23 @@ function Venues() {
                 </div>
               </div>
               <div className='row'>
-                <div className="col-md-2">
+                <div className="col-md-2 indi-width">
                   <div className='indicators'><b>&lt;100</b></div>
                 </div>
-                <div className="col-md-2 ">
+                <div className="col-md-2 indi-width">
                   <div className='indicators'><b>100-250</b></div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-2 indi-width">
                   <div className='indicators'><b>250-500</b></div>
                 </div>
-                <div className="col-md-2">
-                  <div className='indicators'><b>500-1000</b></div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>500-1000</b></div>
                 </div>
-                <div className="col-md-2">
-                  <div className='indicator'><b>1000-2000</b></div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>1000-2000</b></div>
                 </div>
-                <div className="col-md-2">
-                  <div className='indicators'><b>2000+</b></div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicator'><b>2000+</b></div>
                 </div>
               </div>
               <div className='row'>
@@ -139,22 +139,22 @@ function Venues() {
                   </div>
                 </div>
                 <div className='row'>
-                  <div className="col-md-2">
+                  <div className="col-md-2 indi-width1">
                     <div className='indicators'><b>&lt;=25K</b></div>
                   </div>
-                  <div className="col-md-2 ">
-                    <div className='indicators'><b>25K-50K</b></div>
+                  <div className="col-md-2 indi-width1">
+                    <div className='oneline '><b>25K-50K</b></div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 indi-width1">
                     <div className='indicators'><b>50K-1L</b></div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 indi-width1">
                     <div className='indicators'><b>1L-2L</b></div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 indi-width1">
                     <div className='indicators'><b>2L-5L</b></div>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 indi-width1">
                     <div className='indicators'><b>5L+</b></div>
                   </div>
                 </div>
@@ -174,16 +174,18 @@ function Venues() {
 
 
         <br />
-        <div className="container">
+        <div className="container cent">
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-12">
               <h1>Venues</h1>
             </div>
-            <div className="col-md-2 ">
-              <input className="form-control me-sm-2 searchpart " type="search" placeholder="Search" />
+          </div>
+          <div className='row'>
+            <div className="col-md-6 wid">
+              <input className="form-control searchpart" type="search" placeholder="Search" />
             </div>
-            <div className="col-md-2 ">
-              <button className="btn btn-primary my-2 my-sm-0 searchpart " type="submit">
+            <div className="col-md-6">
+              <button className="btn btn-primary searchbtn " type="submit">
                 Search
               </button>
             </div>
@@ -335,15 +337,20 @@ function Venues() {
 
 const Wrapper = styled.div`
  /* Your existing styles and the added styles for the filter window */
+ .filt{
+  margin-left:-20px;
+ }
+
  .btn-primary{
   background-color:#e61041;
 }
 .btn-primary:hover{
   background-color:#c30733; 
 }
-.searchpart{
-  margin-left:70px;
+.btn-primary:focus{
+  background-color:#c30733; 
 }
+
 .cont1 ,.cont2 ,.cont3
   width:100%;
  }
@@ -360,8 +367,9 @@ const Wrapper = styled.div`
           font-size:9px;
           padding:0px;
  }
+
         .indicator{
-          font-size:8px;
+          font-size:9px;
         padding:0px;
   }
         .apply-btn{
@@ -454,9 +462,7 @@ const Wrapper = styled.div`
         .btn-primary:hover {
           background-color: #0056b3;
   }
-  .searchpart{
-    padding-left:20px;
-  }
+
 
         .filter-window {
           position: absolute;
@@ -480,12 +486,62 @@ const Wrapper = styled.div`
         justify-content:center;
 
   }
+  .oneline{
+    width:40px;
+    font-size:7.9px;
+  }
+  .searchbtn{
+    position:absolute;
+    margin-left:450px; 
+    margin-top:-50px;
+  }
+  .searchpart{
+    position:absolute;
+    margin-left:800px; 
+    width:200px; 
+    margin-top:-50px;
+
+  }
+    
   @media only screen and (max-width:768px){
+    .cent{
+      margin-left:25px;
+     }
     .Venuestitle{
         font-size:20px;
     }
+    .searchpart
     {
+      position:static;
+        margin-left:0px; 
+      margin-top:20px;
+      margin-bottom:20px;
+      width:200px;
+    }
+    .searchbtn{
+     margin-left:210px;
+     margin-top:-58px;
+    }
+    .wid{
+     
+      width:200px;
+    }
+    .indicators{
+      width:40px;
+      font-size:9px;
+    } 
+    .indicator{
+      font-size:9px;
+      text-align:right;
+    }
+    
+    .indi-width{
+      width:65px;
       
+    }
+    .indi-width1{
+      width:61px;
+      text-align:center;
     }
   }
 

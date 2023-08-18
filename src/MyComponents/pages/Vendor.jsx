@@ -272,6 +272,7 @@ h6 {
 .action-buttons {
   display: flex;
   align-items: center;
+  margin-bottom:20px;
 }
 
 .title {
@@ -305,6 +306,10 @@ h6 {
       width:350px;
       height:350px;
   }
+  .action-buttons{
+    margin-bottom:20px;
+  }
+
 }
 `
 export default Booking_header;

@@ -148,17 +148,18 @@ const Wrapper = styled.div`
   }
   @media only screen and (max-width:768px){
    .map1{
-    width:420px;
+    width:410px;
+    height:700px;
     padding-top:75px;
    }
    .contents{
     margin-top:200px;
    }
   .IMG{
-      padding-right:10px;
+      margin-left:-7px;
    }
    .contact-container{
-    margin-bottom:-130px;
+    margin-bottom:-118px;
    }
   }
 
