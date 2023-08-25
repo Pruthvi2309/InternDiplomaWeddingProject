@@ -59,7 +59,7 @@ function Navbar() {
 
                      <li className="nav-item">
                      <div className="dropdown-container">
-                        <NavLink to="/Vendor"><button className="dropdown-button">Vendors</button></NavLink>
+                        <NavLink to="/Vendors"><button className="dropdown-button">Vendors</button></NavLink>
                         <div className="dropdown-content vendors">
                           <div className="row">
                             <div className="col-md-3">
@@ -149,7 +149,7 @@ function Navbar() {
 
                                            {/* Abouts Us */}
 
-                         <button href="#" className="aboutus">About Us</button>
+                         <NavLink to="/AboutUsmain" className="link"><button  className="aboutus">About Us</button></NavLink>
 
                                             {/* Contact Us */}
                                           
@@ -172,7 +172,7 @@ function Navbar() {
            <div className="nav-item dropdown width">
              <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="images/profile.png"/>
             <div className="dropdown-menu" data-popper-placement="bottom-start">
-                  <a className="dropdown-item" href="#">My Profile</a>
+                  <NavLink to="/ProfileSettings" className="link"><a className="dropdown-item">My Profile</a></NavLink>
                   <a className="dropdown-item" href="#">Custom Packages</a>
                   <a className="dropdown-item" href="#">Booking Requests</a>
                   <div className="dropdown-divider"></div>
@@ -186,7 +186,9 @@ function Navbar() {
   )
 }
 const Wrapper= styled.section`
-
+.link{
+  text-decoration:none;
+}
 
                               //Navbar-WebsiteLogo
 .logo{
@@ -244,6 +246,7 @@ const Wrapper= styled.section`
   border:none;
   background-color:#e61041;
   padding-left:30px;
+  margin-top:8px;
   color:white;
 }
 .contactus{
@@ -280,7 +283,7 @@ const Wrapper= styled.section`
 
                                   // Settings
       
-dropdown-menu{
+.dropdown-menu{
   min-width:0px;
   width:140px;
   margin-left:-90px;

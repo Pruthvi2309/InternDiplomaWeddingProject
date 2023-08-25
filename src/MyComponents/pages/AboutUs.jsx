@@ -1,6 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom'
 
 const AboutUs = () => {
   return (
@@ -8,13 +9,16 @@ const AboutUs = () => {
       <div className="about-us container">
         <div className="background-img"></div>
         <div className="about-wrapper row align-items-center">
+        <NavLink to="/AboutUsmain" className="link">
           <div className="image-container col-md-6 text-right ">
             <img
               src="https://i.pinimg.com/564x/a9/72/0a/a9720ae02302e88a923fd1a7e915e5f3.jpg"
               alt="Our Journey"
-            />
+            />      
           </div>
+          </NavLink>
           <div className="text-content col-md-6 bg-white text-dark p-4 rounded">
+          <NavLink to="/AboutUsmain" className="link">
             <h2>About Us</h2>
             <p>Welcome to our wedding website! We are excited to share our journey with you.</p>
             <p>Our love story began...</p>
@@ -24,8 +28,10 @@ const AboutUs = () => {
               memories.
             </p>
             <p>As we embark on this new chapter, we invite you to be a part of our story...</p>
+          </NavLink>
           </div>
         </div>
+
       </div>
     </Wrapper>
   );
@@ -34,7 +40,9 @@ const AboutUs = () => {
 
 
 const Wrapper = styled.div`
-
+.link{
+  text-decoration:none;
+}
   .about-us {
     height: 100px;
     display:flex;

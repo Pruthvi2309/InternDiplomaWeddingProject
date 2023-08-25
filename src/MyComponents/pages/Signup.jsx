@@ -1,24 +1,45 @@
 import { NavLink } from 'react-router-dom';
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
+
+
 const Signup = () => {
+  const [uname,setName] = useState("");
+  const [uemail,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [Confirmpassword,setConfirmPassword] = useState("");
+
+  const collectData = async () => {
+    if(password==Confirmpassword){
+      
+      console.log(password);
+    let result = await fetch('http://localhost:4000/signup', {
+        method: 'post',
+        body: JSON.stringify({uname, uemail, password}),
+        headers: { 'Content-Type': 'application/json' },
+    });
+    console.log(result);
+    result = await result.json();
+    // localStorage.setItem("items", JSON.stringify(result));
+    }
+  }
   return (
     <Wrapper>
     <div>
     <div class="signup-page">
       <div class="form">
-        <div class="signup">
+        <div class="signup">  
           <div class="signup-header">
             <h3>SIGNUP</h3>
           </div>
         </div>
         <form class="signup-form">
-          <input type="text" placeholder="username"/>
-          <input type="email" placeholder="email"/>
-          <input type="password" placeholder="password"/>
-          <input type="password" placeholder="confirm password"/>
-          <button>signup</button>
+          <input type="text" onChange={(e) => setName(e.target.value)} placeholder="username" value={uname} required/>
+          <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="email" value={uemail} required/>
+          <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="password" value={password} required/>
+          <input type="password" onChange={(e) => setConfirmPassword(e.target.value)} placeholder="confirm password" value={Confirmpassword} required/>
+          <button onClick={collectData} >signup</button>
           <p class="message">Already have an account? <NavLink to="/Login"><a href="#">Login here</a></NavLink></p>
         </form>
       </div>

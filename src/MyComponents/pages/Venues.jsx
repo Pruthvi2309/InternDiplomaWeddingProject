@@ -513,10 +513,8 @@ const Wrapper = styled.div`
     .searchpart
     {
       position:static;
-        margin-left:0px; 
       margin-top:20px;
-      margin-bottom:20px;
-      width:200px;
+         
     }
     .searchbtn{
      margin-left:210px;

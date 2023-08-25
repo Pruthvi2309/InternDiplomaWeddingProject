@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom'
 
 function Booking_header() {
   return (
@@ -81,13 +82,13 @@ function Booking_header() {
                   Review Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio saepe excepturi adipisci nostrum, nesciunt omnis reiciendis tempore temporibus corporis culpa?
                 </p>
                 <div className="view-more-btn">
-                  <button className="btn btn-primary">View more</button>
+                  <NavLink to="/Review"><button className="btn btn-primary">View more</button></NavLink>
                 </div>
               </div>
             </div>
             <div className="action-buttons">
               <div className="view-more-btn">
-                <button className="btn btn-primary">View more</button>
+                <NavLink to="/Review"><button className="btn btn-primary">View more</button></NavLink>
               </div>
               <div className="add-to-package-btn">
                 <button className="btn btn-primary">Add to Package</button>
