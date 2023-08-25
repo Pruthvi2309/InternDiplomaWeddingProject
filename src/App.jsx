@@ -30,6 +30,9 @@ import Payments from './MyComponents/pages/Payments'
 import Photography from './MyComponents/pages/Photography'
 import Makeup from './MyComponents/pages/Makeup'
 import BookingRequest from './MyComponents/pages/BookingRequest'
+import Aboutus from './MyComponents/pages/AboutUs'
+import Packages from './MyComponents/pages/Packages'
+import Food from './MyComponents/pages/Food'
 function App() {
   
 
@@ -40,7 +43,7 @@ function App() {
       <Route path="/" element={<Home/>}></Route>
       <Route path="/Contact" element={<ContactUs/>}></Route>
       <Route path="/Venues" element={<Venues/>}></Route>
-      <Route path="/Venue" element={<Venue/>}></Route>
+      <Route path="/Venue/:vid" element={<Venue/>} />
       <Route path="/Vendors" element={<Vendors/>}></Route>  
       <Route path="/Login" element={<Login/>}></Route>  
       <Route path="/Signup" element={<Signup/>}></Route> 
@@ -54,8 +57,13 @@ function App() {
       <Route path="/Payment" element={<Payments/>}></Route> 
       <Route path="/Photography" element={<Photography/>}></Route> 
       <Route path="/Makeup" element={<Makeup/>}></Route> 
+      <Route path="/Aboutus" element={<Aboutus/>}></Route> 
+      <Route path="/Packages" element={<Packages/>}></Route> 
+      <Route path="/Package/:pname" element={<Venue/>} />
+      <Route path="/Food" element={<Food/>} />
+
     </Routes>
-    {/* <BookingRequest/> */}
+   
     <Footer/>
     </>
   )

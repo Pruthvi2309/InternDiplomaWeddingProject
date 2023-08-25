@@ -170,7 +170,7 @@ function Vendors() {
         {/* Vendor 2 */}
         <div className="row">
           <div className="col-md-4">
-            <div className="vendor-card">
+          <NavLink to="/Food" className="link"><div className="vendor-card">
               <img
                 src="images/Catering.jpg"
                 alt="Vendor"
@@ -192,6 +192,7 @@ function Vendors() {
                 </div>
               </div>
             </div>
+            </NavLink>
           </div>
           <div className="col-md-4">
           <NavLink to="/Makeup" className="link">

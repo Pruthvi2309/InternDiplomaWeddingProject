@@ -1,11 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 
 function Venues() {
-  const [showFilterWindow, setShowFilterWindow] = useState(false);
+  const [data,setData]=useState([]);
+  const [rating,setRating] = useState(-1);
+  const [radio,setRadio] = useState(-1);
+  const [budget,setBudget] = useState(-1);
+  const [search,setSearch] = useState("");
+  const range_arr = ["<100","100-250","250-500","500-1000","1000-2000","2000+"];
+  const rating_arr = ["<3","3-4","4-4.5","4.5-4.8","4.8-5"];
+  const budget_arr = ["<=25K","25K-50K","50K-1L","1L-2L","2L-5L","5L+"];
+  const [selectedVenues, setSelectedVenues] = useState([]);
+  const collectData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/makeup', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const responseData = await response.json(); // Parse the response JSON
+      console.log('Response data from server:', responseData); // Debugging line
+  
+      setData(responseData); // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
 
-  const handleFilterButtonClick = () => {
-    setShowFilterWindow(!showFilterWindow);
+  const filters = () => {
+    // Add your filter logic here
+    console.log('Applying filters...');
+    console.log('Rating:', rating);
+    console.log('Level:', radio);
+    console.log('Budget:', budget);
+    console.log("sending data");
+    // if(range!=-1)
+    // document.getElementById("filter1").style="display:block";
+    // if(radio!=-1)
+    // document.getElementById("filter2").style="display:block";
+    // if(check.length != 0)
+    // document.getElementById("filter3").style="display:block";
+    // if(budget!=-1)
+    // document.getElementById("filter4").style="display:block";
+    sendData();
+  };
+  const reset = () => {
+    // document.getElementById("filter1").style="display:none";
+    // document.getElementById("filter2").style="display:none";
+    // document.getElementById("filter3").style="display:none";
+    // document.getElementById("filter4").style="display:none";
+    collectData();
+  };
+  useEffect(()=>{ 
+      console.log("collecting data");
+      collectData();
+      
+  },[]);
+
+
+  
+  const toggleVenue = (venue) => {
+    setSelectedVenues(prevSelectedVenues => {
+      if (prevSelectedVenues.includes(venue)) {
+        return prevSelectedVenues.filter(v => v !== venue);
+      } else {
+        return [...prevSelectedVenues, venue];
+      }
+      
+    });
+    //  console.log(selectedVenues);
+  }
+
+  const venueTypes = [
+    '4 Star+ Hotels', 'Banquet Halls', 'FarmHouses', 
+    'Hotel', 'Resort', 'Restaurant', 
+    'Destination Wedding', 'Heritage Property'
+  ];
+  
+  
+  const sendData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/makeupfilter', {
+        method: 'post',
+        body: JSON.stringify({ radio, rating, budget }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const searchData = async () => {
+    console.log(search);
+    try {
+      const response = await fetch('http://localhost:4000/makeupsearch', {
+        method: 'post',
+        body: JSON.stringify({ search }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   return (
@@ -23,25 +134,18 @@ function Venues() {
             <div class="offcanvas-body">
               <div className='row'>
                 <div className='col-md-12'>
+              <br></br>
 
-                {/* Location */}
-                <div className="row">
-            <div className="col-md-12">
-              <label htmlFor="location">Location:</label>
-              <input type="text" id="location" className="form-control" placeholder="Enter location" />
-            </div>
-          </div>
-          <br></br>
                 {/* Experience Level */}
                 <div className="row">
             <div className="col-md-12">
               <label>Experience Level:</label>
               <div className="btn-group" role="group" aria-label="Experience Level">
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel1" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel1" autoComplete="off" onClick={()=>setRadio(0)} />
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel1">Beginner</label>
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel2" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel2" autoComplete="off" onClick={()=>setRadio(1)}/>
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel2">Intermediate</label>
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel3" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel3" autoComplete="off" onClick={()=>setRadio(2)}/>
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel3">Experienced</label>
               </div>
             </div>
@@ -88,26 +192,26 @@ function Venues() {
                   <br/>
                   
                           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick={()=>setRating(0)}/>
                             <label class="btn btn-outline-primary" for="btnradio1">&lt;3</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick={()=>setRating(1)}/>
                             <label class="btn btn-outline-primary" for="btnradio2">3 - 4</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onClick={()=>setRating(2)}/>
                             <label class="btn btn-outline-primary" for="btnradio3">4 - 4.5</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"/>
-                            <label class="btn btn-outline-primary" for="btnradio4">4.5 - 4.6</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off"/>
-                            <label class="btn btn-outline-primary" for="btnradio5">4.6 - 5</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" onClick={()=>setRating(3)}/>
+                            <label class="btn btn-outline-primary" for="btnradio4">4.5 - 4.8</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" onClick={()=>setRating(4)}/>
+                            <label class="btn btn-outline-primary" for="btnradio5">4.8 - 5</label>
                           </div>
+                          
                       </div>
                       
-                    
                     </div>
                     </center>
                     <div className="row">
                       <div className='col-md-12'>
                           <br/>
-                          Styles
+                          {/* Venue Type
                       </div>
                     </div>
                     <center>
@@ -116,11 +220,11 @@ function Venues() {
                       <br/>
                       <div class="btn-group cont1" role="group" aria-label="Basic checkbox toggle button group">
                           <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck1">Natural</label>
+                          <label class="btn btn-primary" for="btncheck1">4 Star+ Hotels</label>
                           <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck2">Glamorous</label>
+                          <label class="btn btn-primary" for="btncheck2">Banquet Halls</label>
                           <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck3">Vintage</label>
+                          <label class="btn btn-primary" for="btncheck3">FarmHouses</label>
                         </div>
                       </div>
                     </div>
@@ -128,32 +232,28 @@ function Venues() {
                       <div className='col-md-12'>
                       <div class="btn-group cont2" role="group" aria-label="Basic checkbox toggle button group">
                           <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck4">Bohemian</label>
+                          <label class="btn btn-primary" for="btncheck4">Hotels</label>
                           <input type="checkbox" class="btn-check" id="btncheck5" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck5">Matt</label>
+                          <label class="btn btn-primary" for="btncheck5">Resorts</label>
                           <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck6">Airbrush</label>
-                          <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck6">HD</label>
-                          {/* <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off"/> */}
-                          {/* <label class="btn btn-primary" for="btncheck6">High Definition</label> */}
+                          <label class="btn btn-primary" for="btncheck6">Restaurant</label>
                         </div>
                       </div>
                     </div>
-                    {/* <div className="row">
+                    <div className="row">
                       <div className='col-md-12'>
                       <div class="btn-group cont3" role="group" aria-label="Basic checkbox toggle button group">
                           <input type="checkbox" class="btn-check" id="btncheck7" autocomplete="off"/>
                           <label class="btn btn-primary" for="btncheck7">Destination Wedding</label>
                           <input type="checkbox" class="btn-check" id="btncheck8" autocomplete="off"/>
-                          <label class="btn btn-primary" for="btncheck8"></label>
+                          <label class="btn btn-primary" for="btncheck8">Heritage Property</label>
                           </div>
                       </div>
-                    </div> */}
+                    </div>
                     </center>
                     <div className="row">
                       <div className='col-md-12'>
-                          <br/>
+                          <br/> */}
                           Budget
                       </div>
                     </div>
@@ -165,30 +265,30 @@ function Venues() {
                     </div>
                     <div className='row'>
                       <div className="col-md-2">
-                        <div className='indicators'><b>&lt;=10,000</b></div>
+                        <div className='indicators'><b>&lt;=2.5K</b></div>
                       </div>
                       <div className="col-md-2 ">
-                        <div className='indicators'><b>10,000-17,000</b></div>
+                        <div className='indicators'><b>2.5K-3.0L</b></div>
                       </div>
                       <div className="col-md-2">
-                        <div className='indicators'><b>20,000-25,000</b></div>
+                        <div className='indicators'><b>4.0L-5.0L</b></div>
                       </div>
                       <div className="col-md-2">
-                        <div className='indicators'><b>&gt;=30,000</b></div>
+                        <div className='indicators'><b>7.0L-10L</b></div>
                       </div>
                       <div className="col-md-2">
-                        <div className='indicators'><b>31,000-40,000</b></div>
+                        <div className='indicators'><b>10L+</b></div>
                       </div>
                       <div className="col-md-2">
-                        <div className='indicators'><b>50,000</b></div>
+                        <div className='indicators'><b>15L</b></div>
                       </div>
                     </div>
                     <div className="row">
                       <div className='col-md-12'>
                       <div class="d-grid gap-2">
                         <br/>
-                        <button class="btn btn-lg btn-primary" type="button">Apply</button>
-                        <button type="button" class="btn btn-outline-primary">Reset</button>
+                        <button class="btn btn-lg btn-primary" type="button" onClick={filters}>Apply</button>
+                        <button type="button" class="btn btn-outline-primary" onClick={reset}>Reset</button>
                       </div>
                       </div>
                     </div>
@@ -204,57 +304,49 @@ function Venues() {
                 <div className="col-md-8">
                   <h1>Makeup</h1>
                 </div>
+                {/* <div className="col-md-2 mob-width">
+                  <input className="form-control me-sm-2" type="search" placeholder="Search" />
+                </div>
                 <div className="col-md-2">
-                  <input className="form-control me-sm-2 mob-width"
+                <button className="btn btn-primary mob-btn" type="submit">
+                    Search
+                  </button>
+                </div>
+              </div> */}
+              <div className="col-md-2">
+                  <input className="form-control me-sm-2 mob-width" value={search} onChange={e=>setSearch(e.target.value)}
                   type="search"
                   placeholder="Search" 
                    />
                 </div>
                 <div className="col-md-2">
-                  <button className="btn btn-primary mob-btn" type="submit">
+                  <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
                     Search
                   </button>
                 </div>
               </div>
+              
               <div className="row">
-           <div className="col-md-4">
+              {data.map((curElem) => {
+               const img = "venues/"+curElem.mid + ".jpg";
+                // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
+                return (
+           <div className="col-md-4" key={curElem.mid}> 
            <div className="card">
-            <div className="rating">4.7</div>
-              <img src="images/i1.jpg" className="card-img-top"/>
+            <div className="rating">{curElem.mrating}</div>
+              <img src="images/i1.jpg" className="card-img-top" alt="Makeup for Wedding" />
               <div className="card-body">
-                <h5 className="card-title">Glamour Makeup Studio</h5>
-                <p className="address">123 Beauty Avenue, Banglore</p>
-                <p className="type">Makeup Artist</p>
-                <p className='type'>Price 16000 per person</p>
+                <h5 className="card-title">{curElem.mname}</h5>
+                <p className="address">{curElem.mlocation}</p>
+                <p className="type">{curElem.mtype}</p>
+                <p className='type'>{curElem.mprice}</p>
             </div>
            </div>
           </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="rating">4.8</div>
-              <img src="images/i2.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">krishna Beauty Parlour</h5>
-                <p className="address">Sf-16 City Point, Borsad</p>
-                <p className="type">Makeup Artist</p>
-                <p className='type'>Price 31000 for each</p>
-              </div>
-            </div>
+            );
+            })}
           </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="rating">4.8</div>
-              <img src="images/i3.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Narsinh Makeup Studio</h5>
-                <p className="address">69 Tepalnagar, Vadodara </p>
-                <p className="type">Makeup Artist</p>
-                <p className='type'>Price 20000 each perosn</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+         </div>
 
             <div className="row">
               <div className="col-md-12 pagin">
@@ -334,15 +426,14 @@ padding-top:25px;
 }
 
 .top-container {
-padding-top: 80px;
+padding-top: 70px;
 // padding-left: 40px;
 padding-bottom: 10px;
+padding-right: 54rem;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 h1{
-margin-left: ;
-margin-top:11px;
-margin-bottom:20px;
+margin-left: -32rem;
 }
 
 
@@ -356,7 +447,7 @@ width: 340px;
   position: absolute;
 top: 10px;
 right: 10px;
-color: #e61014;
+color: #fff;
 padding: 5px 10px;
 font-weight: bold;
 font-size: 16px;
@@ -388,7 +479,7 @@ margin-top: 10px;
 }
 
 .capacity-box {
-background-color: #f1f1f1;
+  background-color: #f1f1f1;
 padding: 8px;
 display: inline-block;
 margin-top: 10px;
@@ -451,7 +542,7 @@ justify-content:center;
   }
   .mob-btn{
     position:absolute;
-    margin-left:-250px;
+    margin-left:210px;
     margin-top:-59px;
     
     z-index:3;

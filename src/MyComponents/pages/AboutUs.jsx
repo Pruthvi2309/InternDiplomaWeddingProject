@@ -2,93 +2,133 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const AboutUs = () => {
+function AboutUs() {
   return (
     <Wrapper>
-      <div className="about-us container">
-        <div className="background-img"></div>
-        <div className="about-wrapper row align-items-center">
-          <div className="image-container col-md-6 text-right ">
-            <img
-              src="https://i.pinimg.com/564x/a9/72/0a/a9720ae02302e88a923fd1a7e915e5f3.jpg"
-              alt="Our Journey"
-            />
-          </div>
-          <div className="text-content col-md-6 bg-white text-dark p-4 rounded">
-            <h2>About Us</h2>
-            <p>Welcome to our wedding website! We are excited to share our journey with you.</p>
-            <p>Our love story began...</p>
+     <div className="super">
+      <div className="BackgroundImageWrapper crop">
+        <img src="images/about.png" className="img1"/>
+      </div>
+      <div className="ContentContainer">
+        <div className="ContentBox">
+          <h2 className="heading">About Us</h2>
+          <div className="Description">
             <p>
-              We met in college and instantly connected over our shared love for photography and
-              adventure. Our journey has taken us to breathtaking landscapes and wonderful
-              memories.
+              Welcome to Wedpro, your one-stop destination for creating magical wedding experiences. We are dedicated to making your special day extraordinary, from the proposal to the reception.
             </p>
-            <p>As we embark on this new chapter, we invite you to be a part of our story...</p>
+            <p>
+              With a team of passionate wedding planners and creatives, we strive to bring your dream wedding to life. From intimate elopements to grand celebrations, we have the expertise to curate every detail to perfection.
+            </p>
+            <p>
+              Let us be a part of your journey, turning your love story into an enchanting celebration that will be cherished forever.
+            </p>
           </div>
         </div>
       </div>
+    </div>
     </Wrapper>
   );
-};
-
-
+}
 
 const Wrapper = styled.div`
+.super{
+  position: relative;
+  height: 100vh;
+  padding-top:50px;
+  overflow: hidden;
+}
 
-  .about-us {
-    height: 100px;
-    display:flex;
-    justify-content:center;
-  }
 
+.BackgroundImageWrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top:60px;
+  z-index: -1;
+}  
+.img1{
+  width: 100%;
+  height:100%;
+  // object-fit: cover;
+}
   
-  .about-wrapper {
-    width: 90%;
-    height: 100%;
-  }
+.ContentContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 1;
   
-  .image-container {
-    text-align: right;
-    padding: 20px;
-  }
-  
-  .image-container img {
-    max-width: 100%;
-    height: 320px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .text-content {
-    padding: 20px;
-    background-color: white;
-    color: #333; /* Adjust the text color according to the background color */
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .text-content h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color:#e61041;
-  }
-  
-  .text-content p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-  @media only screen and (max-width:768px){
-    .image-container{
-      width:400px;
-      
+}
+.ContentBox{
+  width: 60%;
+  height: 70%;
+  padding: 40px;
+  background-color: rgba(255, 255, 255,0.5);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} 
+.heading{
+  text-align: center;
+  font-size: 45px;
+  color: #e61041;
+  margin-bottom: 20px;
+}
+.Description{
+  text-align: center;
+  color: #333;
+  font-size: 22px;
+  line-height: 1.6;
+}
+@media only screen and (max-width: 768px){
+     .Description{
+        font-size: 16px;
+     }
+     .heading{
+        font-size: 30px;
+     }
+     .ContentBox{
+      width: 90%;
+      height:450px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255);
     }
-    .image-container img {
-      max-width: 100%;
-      height: 400px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    .ContentContainer{
+      margin-top:50px;
+      padding-top:550px;
+      height:300px;
+      padding-bottom:600px;
+
     }
+    .BackgroundImageWrapper{
+        background-size: cover;
+        background-position: center;
+    }
+    .crop{
+      content:url(images/about_crop.png);
+      width:100%;
+      height:400px;
+    }
+    // .img1{
+    //   width: 100%;
+    //   height: 100%;
+    //   object-fit: cover;
+    //   float: right;
+    //   // background-size: cover;
+    //   // background-position: center;
+    // }
+    //   width: 100%;
+    //   height: 100%;
+    //   background-size: cover;
+    //   // background-position: center;
+    // }
+  
   }
 `;
 

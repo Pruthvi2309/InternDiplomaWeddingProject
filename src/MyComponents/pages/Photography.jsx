@@ -1,11 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 
 function Venues() {
-  const [showFilterWindow, setShowFilterWindow] = useState(false);
+  const [data,setData]=useState([]);
+  const [rating,setRating] = useState(-1);
+  const [radio,setRadio] = useState(-1);
+  const [budget,setBudget] = useState(-1);
+  const [search,setSearch] = useState("");
+  const range_arr = ["<100","100-250","250-500","500-1000","1000-2000","2000+"];
+  const rating_arr = ["<3","3-4","4-4.5","4.5-4.8","4.8-5"];
+  const budget_arr = ["<=25K","25K-50K","50K-1L","1L-2L","2L-5L","5L+"];
+  const [selectedVenues, setSelectedVenues] = useState([]);
+  const collectData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/photographer', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const responseData = await response.json(); // Parse the response JSON
+      console.log('Response data from server:', responseData); // Debugging line
+  
+      setData(responseData); // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
 
-  const handleFilterButtonClick = () => {
-    setShowFilterWindow(!showFilterWindow);
+  const filters = () => {
+    // Add your filter logic here
+    console.log('Applying filters...');
+    console.log('Rating:', rating);
+    console.log('Level:', radio);
+    console.log('Budget:', budget);
+    console.log("sending data");
+    // if(range!=-1)
+    // document.getElementById("filter1").style="display:block";
+    // if(radio!=-1)
+    // document.getElementById("filter2").style="display:block";
+    // if(check.length != 0)
+    // document.getElementById("filter3").style="display:block";
+    // if(budget!=-1)
+    // document.getElementById("filter4").style="display:block";
+    sendData();
+  };
+  const reset = () => {
+    // document.getElementById("filter1").style="display:none";
+    // document.getElementById("filter2").style="display:none";
+    // document.getElementById("filter3").style="display:none";
+    // document.getElementById("filter4").style="display:none";
+    collectData();
+  };
+  useEffect(()=>{ 
+      console.log("collecting data");
+      collectData();
+      
+  },[]);
+
+  const sendData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/photofilter', {
+        method: 'post',
+        body: JSON.stringify({ radio, rating, budget }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const searchData = async () => {
+    console.log(search);
+    try {
+      const response = await fetch('http://localhost:4000/photographysearch', {
+        method: 'post',
+        body: JSON.stringify({ search }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   return (
@@ -23,25 +113,18 @@ function Venues() {
             <div class="offcanvas-body">
               <div className='row'>
                 <div className='col-md-12'>
+               <br></br>
 
-                {/* Location */}
-                <div className="row">
-            <div className="col-md-12">
-              <label htmlFor="location">Location:</label>
-              <input type="text" id="location" className="form-control" placeholder="Enter location" />
-            </div>
-          </div>
-          <br></br>
                 {/* Experience Level */}
                 <div className="row">
             <div className="col-md-12">
               <label>Experience Level:</label>
               <div className="btn-group" role="group" aria-label="Experience Level">
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel1" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel1" autoComplete="off" onClick={()=>setRadio(0)} />
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel1">Beginner</label>
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel2" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel2" autoComplete="off"  onClick={()=>setRadio(1)} />
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel2">Intermediate</label>
-                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel3" autoComplete="off" />
+                <input type="radio" className="btn-check" name="experienceLevel" id="experienceLevel3" autoComplete="off"  onClick={()=>setRadio(2)} />
                 <label className="btn btn-outline-primary" htmlFor="experienceLevel3">Experienced</label>
               </div>
             </div>
@@ -88,15 +171,15 @@ function Venues() {
                   <br/>
                   
                           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"  onClick={()=>setRating(0)}/>
                             <label class="btn btn-outline-primary" for="btnradio1">&lt;3</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"  onClick={()=>setRating(1)}/>
                             <label class="btn btn-outline-primary" for="btnradio2">3 - 4</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"  onClick={()=>setRating(2)}/>
                             <label class="btn btn-outline-primary" for="btnradio3">4 - 4.5</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"  onClick={()=>setRating(3)}/>
                             <label class="btn btn-outline-primary" for="btnradio4">4.5 - 4.8</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off"/>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off"  onClick={()=>setRating(4)}/>
                             <label class="btn btn-outline-primary" for="btnradio5">4.8 - 5</label>
                           </div>
                           
@@ -156,15 +239,15 @@ function Venues() {
                     <div className="row">
                       <div className='col-md-12'>
                         <br/>
-                          <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3" />
+                          <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3" value={budget} onChange={e=>setBudget(e.target.value)} />
                       </div>
                     </div>
                     <div className='row'>
                       <div className="col-md-2">
-                        <div className='indicators'><b>&lt;=2.5LK</b></div>
+                        <div className='indicators'><b>&lt;=2.5K</b></div>
                       </div>
                       <div className="col-md-2 ">
-                        <div className='indicators'><b>2.5K-3.0L</b></div>
+                        <div className='indicators'><b>2.5L-3.0L</b></div>
                       </div>
                       <div className="col-md-2">
                         <div className='indicators'><b>4.0L-5.0L</b></div>
@@ -183,8 +266,8 @@ function Venues() {
                       <div className='col-md-12'>
                       <div class="d-grid gap-2">
                         <br/>
-                        <button class="btn btn-lg btn-primary" type="button">Apply</button>
-                        <button type="button" class="btn btn-outline-primary">Reset</button>
+                        <button class="btn btn-lg btn-primary" type="button" onClick={filters}>Apply</button>
+                        <button type="button" class="btn btn-outline-primary" onClick={reset}>Reset</button>
                       </div>
                       </div>
                     </div>
@@ -202,55 +285,37 @@ function Venues() {
                 </div>
 
                 <div className="col-md-2">
-                  <input className="form-control me-sm-2 mob-width"
+                  <input className="form-control me-sm-2 mob-width" value={search} onChange={e=>setSearch(e.target.value)}
                   type="search"
                   placeholder="Search" 
                    />
                 </div>
                 <div className="col-md-2">
-                  <button className="btn btn-primary mob-btn" type="submit">
+                  <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
                     Search
                   </button>
                 </div>
               </div>
 
               <div className="row">
-          <div className="col-md-4">
+              {data.map((curElem) => {
+               const img = "venues/"+curElem.pid + ".jpg";
+                // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
+                return (
+          <div className="col-md-4" key={curElem.pid}>
             <div className="card">
-              <div className="rating">4.8</div>
+              <div className="rating">{curElem.prating}</div>
               <img src="images/pic1.jpg" className="card-img-top" alt="..." />
               <div className="card-body">
-                <h5 className="card-title">Xesus Digital Studio</h5>
-                <p className="address">Mullah oo ka Adda, Lahore, Pakistan</p>
-                <p className="type">Photographer</p>
-                <p className='type'>Price = 2000 per hour</p>
+                <h5 className="card-title">{curElem.pname}</h5>
+                <p className="address">{curElem.plocation}</p>
+                <p className="type">{curElem.ptype}</p>
+                <p className='type'>{curElem.pprice}</p>
               </div>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="rating">4.8</div>
-              <img src="images/pic5.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Aliance Studio</h5>
-                <p className="address">Param Complex, V.V.N, Anand</p>
-                <p className="type">Photographer</p>
-                <p className='type'>Price = 2400 per hour</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card">
-              <div className="rating">4.8</div>
-              <img src="images/pic3.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Dwishi Photography</h5>
-                <p className="address">69 Lake Rd, Bhadran</p>
-                <p className="type">Photographer</p>
-                <p className='type'>Price = 3100 per hour</p>
-              </div>
-            </div>
-          </div>
+           );
+          })}
         </div>
       </div>
             <div className="row">
@@ -337,6 +402,9 @@ function Venues() {
     }
     h1{
     margin-bottom:20px;
+    }
+    .top-container btn-primary{
+      margin-left:0px;
     }
 
 
@@ -456,5 +524,3 @@ function Venues() {
  `;
 
         export default Venues;
-
-
