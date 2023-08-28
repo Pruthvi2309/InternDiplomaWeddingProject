@@ -1,8 +1,44 @@
-import React from 'react'
+
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import React, { useState, useEffect } from 'react';
+
 
 function Navbar() {
+  const [search,setSearch] = useState("");
+  // const searching = async() =>{
+  //     console.log(search);
+  //     try {
+  //       const response = await fetch('http://localhost:4000/websearch', {
+  //         method: 'post',
+  //         body: JSON.stringify({ search }),
+  //         headers: { 'Content-Type': 'application/json' },
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+          
+  //       } else {
+  //         console.error('API response not okay:', response.status);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };  
+  
+  var items = localStorage.getItem("items");
+  console.log(items);
+  const uname = JSON.parse(items);
+  console.log(uname);
+  var name = "";
+  if(uname==null){
+    name = "";
+  }
+  else{
+    name = uname["uname"];
+  }
+  const logout = () => {
+    localStorage.clear();
+  }
   return (
   <Wrapper>
     <style>
@@ -158,7 +194,7 @@ function Navbar() {
 
               </ul>
               <form className="d-flex search">
-                   <input className="form-control me-sm-2 searchbar" type="search" placeholder="Search"/>
+                   <input className="form-control me-sm-2 searchbar" type="search" placeholder="Search" value={search} onChange={(e)=>setSearch(e.target.value)}/>
                    <button type="submit" className="search-icon"><i className="fa fa-search"></i></button>
               </form>
 
@@ -168,15 +204,15 @@ function Navbar() {
                <NavLink to="/Signup"><button className="btn btn-reg my-2 my-sm-0" type="submit">Register</button></NavLink>
                <NavLink to="/Login"><button className="btn  btn-log my-2 my-sm-0" type="submit">Login</button></NavLink>
            </form>
-          
+            <div className="user-name"><b>{name}</b></div>
            <div className="nav-item dropdown width">
-             <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="images/profile.png"/>
+             <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="../images/profile.png"/>
             <div className="dropdown-menu" data-popper-placement="bottom-start">
                   <NavLink to="/ProfileSettings" className="link"><a className="dropdown-item">My Profile</a></NavLink>
-                  <NavLink to="/Packages" className="link"><a className="dropdown-item" href="#">Custom Packages</a></NavLink>
+                  <NavLink to="/Packages/Profile/General" className="link"><a className="dropdown-item" href="#">Custom Packages</a></NavLink>
                   <a className="dropdown-item" href="#">Booking Requests</a>
                   <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" href="#">Settings</a>
+                  <a className="dropdown-item" onClick={logout}>Log out</a>
             </div>
           </div>
          </div>
@@ -186,6 +222,12 @@ function Navbar() {
   )
 }
 const Wrapper= styled.section`
+.user-name{
+  color:white;
+  font-size:20px; 
+  padding-right:10px;
+
+}
 .link{
   text-decoration:none;
 }

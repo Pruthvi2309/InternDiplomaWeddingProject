@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [uname, setName] = useState("");
   const [password, setPassword] = useState("");
-  
+  const navigate = useNavigate();
   const collectData = async () => {
     const userData = {
       uname,
@@ -25,7 +25,9 @@ const Login = () => {
       const data = await response.json();
   
       if (data.success) {
-        alert('Login successful');
+        navigate('/');
+        localStorage.setItem("items",JSON.stringify(userData));
+        
       } else {
         alert('Invalid credentials');
       }

@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-// import Hello from './components/helloworld'
-// import Wrapperclass from './components/Wrapperclass'
 import Home from './MyComponents/pages/Home'
 import Footer from './MyComponents/layout/Footer'
 import  Navbar from './MyComponents/layout/Navbar'
@@ -33,6 +30,8 @@ import BookingRequest from './MyComponents/pages/BookingRequest'
 import Aboutus from './MyComponents/pages/AboutUs'
 import Packages from './MyComponents/pages/Packages'
 import Food from './MyComponents/pages/Food'
+import Package from './MyComponents/pages/Package'
+import Profile from './MyComponents/pages/ProfileSettings'
 function App() {
   
 
@@ -45,6 +44,7 @@ function App() {
       <Route path="/Venues" element={<Venues/>}></Route>
       <Route path="/Venue/:vid" element={<Venue/>} />
       <Route path="/Vendors" element={<Vendors/>}></Route>  
+      <Route path="/:vname/:pname" element={<Vendor/>}></Route>  
       <Route path="/Login" element={<Login/>}></Route>  
       <Route path="/Signup" element={<Signup/>}></Route> 
       <Route path="/Pandits" element={<Pandits/>}></Route> 
@@ -53,15 +53,15 @@ function App() {
       <Route path="/Gift" element={<Gift/>}></Route> 
       <Route path="/Prewedding" element={<Prewedding/>}></Route> 
       <Route path="/Jewellery" element={<Jewellery/>}></Route> 
-      <Route path="/Review" element={<Review/>}></Route> 
+      <Route path="/Review/:category/:name" element={<Review/>}></Route> 
       <Route path="/Payment" element={<Payments/>}></Route> 
       <Route path="/Photography" element={<Photography/>}></Route> 
       <Route path="/Makeup" element={<Makeup/>}></Route> 
       <Route path="/Aboutus" element={<Aboutus/>}></Route> 
-      <Route path="/Packages" element={<Packages/>}></Route> 
-      <Route path="/Package/:pname" element={<Venue/>} />
+      <Route path="/Packages/:category/:name" element={<Packages/>}></Route> 
+      <Route path="/Package/:pname" element={<Package/>} />
       <Route path="/Food" element={<Food/>} />
-
+      <Route path="/ProfileSettings" element={<Profile/>}/>
     </Routes>
    
     <Footer/>

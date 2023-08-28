@@ -126,7 +126,7 @@ app.post("/id_venue", (req, res) => {
 
 app.get("/photographer", (req, res) => {
 
-  con.query('SELECT * FROM photographer', (error, result) => {
+  con.query('SELECT * FROM photography', (error, result) => {
     if (error) {
       res.send({message: 'Error in connecting to API' });
     } else {
@@ -137,16 +137,22 @@ app.get("/photographer", (req, res) => {
   
 // review in venue page
 
-app.get("/review", (req, res) => {
+app.post("/review", (req, res) => {
+  const data = req.body;
+  
+  var name = data.name;
+  var category = data.category;
+  con.query(`SELECT * FROM review where rfor = '${name}' AND rcategory='${category}'`, (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+      console.log(error); 
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
 
-    con.query('SELECT * FROM review ', (error, result) => {
-      if (error) {
-        res.send({message: 'Error in connecting to API' });
-      } else {
-        res.send(result);
-      }
-    });
-  })
 
 // request booking in venue
 
@@ -170,8 +176,23 @@ app.post("/request",(req,res)=>{
 
 app.post("/addreview",(req,res)=>{
   const data  =req.body;
-  console.log(data);
+  var average = data.average;
+  var category = data.category;
+  var name = data.name;
+  var first_letter = category[0].toLowerCase();
+  delete data.average;
+  delete data.category;
+  delete data.name;
+ 
   con.query("insert into review SET ?",data,(error,result)=>{
+    if (error) {
+      console.error("Error inserting review:", error);
+      res.send("Error inserting review");
+  } else {
+      
+  }
+  })
+  con.query(`UPDATE ${category} SET ${first_letter}rating = ${average} WHERE  ${first_letter}name='${name}'`,data,(error,result)=>{
     if (error) {
       console.error("Error inserting review:", error);
       res.send("Error inserting review");
@@ -193,6 +214,8 @@ app.get("/packages", (req, res) => {
     }
   });
 })
+
+//create new package
 
 app.post("/createpackage", (req, res) => {
   const { pname,venue_name } = req.body;
@@ -216,11 +239,68 @@ app.post("/createpackage", (req, res) => {
  
 })
 
+// add to package
+
+app.post("/addtopack", (req, res) => {
+  const { name,id,category } = req.body;
+  var vendor = name;
+  var pid = id;
+  var cat = category.toLowerCase();
+  var first_letter = cat[0];
+  var query = `SELECT * FROM packages WHERE pid = ${pid} `; // Start with a true condition
+  
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API ' });
+      console.log(error);
+
+    } else {
+      var pname = result[0].pname;
+      var pvendors = result[0].pvendors;
+      var pprices = result[0].pprices;
+      console.log("package found " + pname);
+      con.query(`SELECT * FROM ${cat} WHERE ${first_letter}name = '${vendor}'`,(error,result)=>{
+        if (error) {
+          console.error("Error updating packages:", error);
+          res.send("Error inserting review");
+      } else {
+        var price = result[0][first_letter+"price"]; 
+        console.log(price);
+        con.query(`UPDATE packages SET pvendors='${pvendors+","+vendor}', pprices = '${pprices+","+price}' WHERE pid=${pid}`,(error,result)=>{
+          if (error) {
+            console.error("Error updating packages:", error);
+            res.send("Error inserting review");
+        } else {
+            res.send(result);
+        }}); 
+      }}); 
+      
+    }
+  });
+ 
+})
+
+// remove item from package
+
+app.post("/remove_item", (req, res) => {
+  const {pname,vendor_arr,prices_arr} = req.body;
+  console.log(pname);
+  var query = `UPDATE packages SET pvendors='${vendor_arr}', pprices = '${prices_arr}' WHERE pname='${pname}'`
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 // filter for Photography Page
 
 app.post("/photofilter", (req, res) => {
   const { rating, radio, budget } = req.body;
-  var query = "SELECT * FROM photographer WHERE 1"; // Start with a true condition
+  var query = "SELECT * FROM photography WHERE 1"; // Start with a true condition
   
   if (radio >= 0) {
     var radio_arr = ["Beginner","Intermediate","Experienced"]; 
@@ -246,12 +326,14 @@ app.post("/photofilter", (req, res) => {
   });
 });
 
+
+
 //search for photographer
 
 app.post("/photographysearch", (req, res) => {
   const search = req.body["search"];
   console.log(search);
-  var query = `SELECT * FROM photographer where pname like '%${search}%'`
+  var query = `SELECT * FROM photography where pname like '%${search}%'`
   console.log(query);
   con.query(query, (error, result) => {
     if (error) {
@@ -386,9 +468,116 @@ app.get("/food", (req, res) => {
 
 // package details
 
-app.get("/package_details", (req, res) => {
+app.post("/package_details", (req, res) => {
+  const data = req.body;
+  var name = data.pname;
+  console.log(name);
+  con.query(`SELECT * FROM packages where pname = '${name}'`, (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+      console.log(error); 
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
 
-  con.query('SELECT * FROM package', (error, result) => {
+// vendor page
+
+app.post("/vendor_details", (req, res) => {
+  const data = req.body;
+  console.log(data);
+  var name = data.pname;
+  console.log(data.vendor_name);
+  var category = data.vname;
+  var first_letter = category[0].toLowerCase();
+  console.log(name);
+  con.query(`SELECT * FROM ${category} where ${first_letter}name = '${name}'`, (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+      console.log(error); 
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// Profile Insert Data
+
+app.post("/profilesetting",(req,res)=>{
+  const data=req.body;
+  console.log(data);
+  con.query("insert into profilesetting SET ?",data,(error,result)=>{
+      if(error)
+      {
+          res.send("error in connecting api")
+      }
+      else
+      {
+          res.send(result)
+      }
+  })
+  
+  
+});
+
+// retrive existing data
+
+app.post("/get_user_data", (req, res) => {
+  // const name = req.body;
+  con.query(`SELECT * FROM profilesetting where profname='Tanish'`, (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// filter for jewellery
+
+app.post("/jwelleryfilter", (req, res) => {
+  const { rating, budget, check } = req.body;
+  var query = "SELECT * FROM jewellery WHERE 1"; // Start with a true condition
+  
+  // if (range >= 0) {
+  //   var range_arr = [[0, 100], [100, 250], [250, 500], [500, 1000], [1000, 2000], [2000, 10000]]; 
+  //   query = query + ` AND guest_capacity BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  // }
+  // /
+  console.log("hi"+check);
+  if (budget >= 0) {
+    var budget_arr = [[0, 25000], [25000, 50000], [50000, 100000], [100000, 200000], [200000, 500000], [500000, 1000000]]; 
+    query = query + ` AND jprice BETWEEN ${budget_arr[budget][0]} AND ${budget_arr[budget][1]}`;
+  }
+  if (check.length > 0) {
+    query = query + ` AND type IN ('${check.join("','")}')`;
+  }
+  if (rating >= 0) {
+    var rating_arr = [[0, 3], [3, 4], [4, 4.5], [4.5, 4.8], [4.8, 5]]; 
+    query = query + ` AND jrating BETWEEN ${rating_arr[rating][0]} AND ${rating_arr[rating][1]}`;
+    
+  }
+
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// collecting data for jewellery
+
+app.get("/jewellery", (req, res) => {
+
+  con.query('SELECT * FROM jewellery', (error, result) => {
     if (error) {
       res.send({message: 'Error in connecting to API' });
     } else {
@@ -397,5 +586,21 @@ app.get("/package_details", (req, res) => {
   });
   
 })
+
+// search for jewellery
+
+app.post("/searchjwell", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM jewellery where jname like '%${search}%'`
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
 
 app.listen(4000);

@@ -1,15 +1,17 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 function Venues() {
-  const [data,setData]=useState([]);
-  const [rating,setRating] = useState(-1);
-  const [check,setCheck] = useState([]);
-  const [budget,setBudget] = useState(-1);
-  const [search,setSearch] = useState("");
-  const range_arr = ["<100","100-250","250-500","500-1000","1000-2000","2000+"];
-  const rating_arr = ["<3","3-4","4-4.5","4.5-4.8","4.8-5"];
-  const budget_arr = ["<=25K","25K-50K","50K-1L","1L-2L","2L-5L","5L+"];
+  const [data, setData] = useState([]);
+  const [rating, setRating] = useState(-1);
+  const [check, setCheck] = useState([]);
+  const [budget, setBudget] = useState(-1);
+  const [search, setSearch] = useState("");
+  const range_arr = ["<100", "100-250", "250-500", "500-1000", "1000-2000", "2000+"];
+  const rating_arr = ["<3", "3-4", "4-4.5", "4.5-4.8", "4.8-5"];
+  const budget_arr = ["<=25K", "25K-50K", "50K-1L", "1L-2L", "2L-5L", "5L+"];
   const [selectedVenues, setSelectedVenues] = useState([]);
   const collectData = async () => {
     try {
@@ -19,16 +21,16 @@ function Venues() {
           'Content-Type': 'application/json'
         }
       });
-  
+
       const responseData = await response.json(); // Parse the response JSON
       console.log('Response data from server:', responseData); // Debugging line
-  
+
       setData(responseData); // Set the fetched data to the state
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-  
+
 
   const filters = () => {
     // Add your filter logic here
@@ -54,19 +56,19 @@ function Venues() {
     // document.getElementById("filter4").style="display:none";
     collectData();
   };
-  useEffect(()=>{ 
-      console.log("collecting data");
-      collectData();
-      
+  useEffect(() => {
+    console.log("collecting data");
+    collectData();
+
     toggleVenue();
-  },[]);
+  }, []);
 
   useEffect(() => {
     console.log('Selected Venues:', selectedVenues);
     setCheck(selectedVenues);
   }, [selectedVenues]);
 
-  
+
   const toggleVenue = (venue) => {
     setSelectedVenues(prevSelectedVenues => {
       if (prevSelectedVenues.includes(venue)) {
@@ -74,18 +76,18 @@ function Venues() {
       } else {
         return [...prevSelectedVenues, venue];
       }
-      
+
     });
     //  console.log(selectedVenues);
   }
 
   const venueTypes = [
-    'fruits', 'cream', 'ganache', 
-    'sprinkles', 'nuts', 'jelly', 
+    'fruits', 'cream', 'ganache',
+    'sprinkles', 'nuts', 'jelly',
     'frosting', 'cigarellos'
   ];
-  
-  
+
+
   const sendData = async () => {
     try {
       const response = await fetch('http://localhost:4000/foodfilter', {
@@ -126,11 +128,11 @@ function Venues() {
 
 
   return (
-    <Wrapper> 
+    <Wrapper>
       <>
-      <div className="top-container">
+        <div className="top-container">
           <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-          Filters
+            Filters
           </button>
           <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
@@ -143,8 +145,8 @@ function Venues() {
 
                   <br></br>
 
-                {/* Experience Level */}
-                {/* <div className="row">
+                  {/* Experience Level */}
+                  {/* <div className="row">
             <div className="col-md-12">
               <label>Experience Level:</label>
               <div className="btn-group" role="group" aria-label="Experience Level">
@@ -160,7 +162,7 @@ function Venues() {
           <br></br> */}
 
                   {/* Guests Capacity */}
-                {/* </div>
+                  {/* </div>
               </div>
               <div className='row'>
                 <div className='col-md-12'>
@@ -194,58 +196,58 @@ function Venues() {
                   Rating
                 </div>
                 <center>
-                <div className="row">
-                
-                  <div className='col-md-12'>
-                  <br/>
-                  
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick={()=>setRating(0)}/>
-                            <label class="btn btn-outline-primary" for="btnradio1">&lt;3</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick={()=>setRating(1)}/>
-                            <label class="btn btn-outline-primary" for="btnradio2">3 - 4</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onClick={()=>setRating(2)}/>
-                            <label class="btn btn-outline-primary" for="btnradio3">4 - 4.5</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" onClick={()=>setRating(3)}/>
-                            <label class="btn btn-outline-primary" for="btnradio4">4.5 - 4.8</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" onClick={()=>setRating(4)}/>
-                            <label class="btn btn-outline-primary" for="btnradio5">4.8 - 5</label>
-                          </div>
-                          
+                  <div className="row">
+
+                    <div className='col-md-12'>
+                      <br />
+
+                      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onClick={() => setRating(0)} />
+                        <label class="btn btn-outline-primary" for="btnradio1">&lt;3</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onClick={() => setRating(1)} />
+                        <label class="btn btn-outline-primary" for="btnradio2">3 - 4</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onClick={() => setRating(2)} />
+                        <label class="btn btn-outline-primary" for="btnradio3">4 - 4.5</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" onClick={() => setRating(3)} />
+                        <label class="btn btn-outline-primary" for="btnradio4">4.5 - 4.8</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" onClick={() => setRating(4)} />
+                        <label class="btn btn-outline-primary" for="btnradio5">4.8 - 5</label>
                       </div>
-                      
+
                     </div>
+
+                  </div>
+                </center>
+                <div className="row">
+                  <div className='col-md-12'>
+                    <br />
+
+                    Fillings
+                    <center>
+                      <div className='row'>
+                        {venueTypes.map((venue, index) => (
+                          <div className='col-md-4' key={index + 1}>
+                            <br />
+                            <input
+                              type='checkbox'
+                              className='btn-check'
+                              id={`btncheck${index}`}
+                              autoComplete='off'
+                              onClick={() => {
+                                toggleVenue(venue);
+                              }}
+                            />
+
+
+                            <label className='btn btn-primary' htmlFor={`btncheck${index}`}>
+                              {venue}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+
                     </center>
-                    <div className="row">
-                      <div className='col-md-12'>
-                          <br/>
-
-                          Fillings
-                      <center>
-                          <div className='row'>
-    {venueTypes.map((venue, index) => (
-      <div className='col-md-4' key={index + 1}>
-        <br />
-        <input
-  type='checkbox'
-  className='btn-check'
-  id={`btncheck${index}`}
-  autoComplete='off'
-  onClick={() => {
-    toggleVenue(venue);
-  }}
-/>
-         
-
-        <label className='btn btn-primary' htmlFor={`btncheck${index}`}>
-          {venue}
-        </label>
-      </div>
-    ))}
-  </div> 
-
-    </center>     
-                          {/* Venue Type
+                    {/* Venue Type
                       </div>
                     </div>
                     <center>
@@ -288,139 +290,145 @@ function Venues() {
                     <div className="row">
                       <div className='col-md-12'>
                           <br/> */}
-                          Budget
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className='col-md-12'>
-                        <br/>
-                          <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3" />
-                      </div>
-                    </div>
-                    <div className='row'>
-                      <div className="col-md-2">
-                        <div className='indicators'><b>&lt;=800</b></div>
-                      </div>
-                      <div className="col-md-2 ">
-                        <div className='indicators'><b>800-2000</b></div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className='indicators'><b>2500-3000</b></div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className='indicators'><b>3600-4800</b></div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className='indicators'><b>5000</b></div>
-                      </div>
-                      <div className="col-md-2">
-                        <div className='indicators'><b>5500</b></div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className='col-md-12'>
-                      <div class="d-grid gap-2">
-                        <br/>
-                        <button class="btn btn-lg btn-primary" type="button" onClick={filters}>Apply</button>
-                        <button type="button" class="btn btn-outline-primary" onClick={reset}>Reset</button>
-                      </div>
-                      </div>
+                    Budget
+                  </div>
+                </div>
+                <div className="row">
+                  <div className='col-md-12'>
+                    <br />
+                    <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3" />
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className="col-md-2">
+                    <div className='indicators'><b>&lt;=800</b></div>
+                  </div>
+                  <div className="col-md-2 ">
+                    <div className='indicators'><b>800-2000</b></div>
+                  </div>
+                  <div className="col-md-2">
+                    <div className='indicators'><b>2500-3000</b></div>
+                  </div>
+                  <div className="col-md-2">
+                    <div className='indicators'><b>3600-4800</b></div>
+                  </div>
+                  <div className="col-md-2">
+                    <div className='indicators'><b>5000</b></div>
+                  </div>
+                  <div className="col-md-2">
+                    <div className='indicators'><b>5500</b></div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className='col-md-12'>
+                    <div class="d-grid gap-2">
+                      <br />
+                      <button class="btn btn-lg btn-primary" type="button" onClick={filters}>Apply</button>
+                      <button type="button" class="btn btn-outline-primary" onClick={reset}>Reset</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
 
-            <br/>
-            <div className="container">
-              <div className="row">
-                <div className="col-md-8">
-                  <h1>Food</h1>
-                </div>
+        <br />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8">
+              <h1>Food</h1>
+            </div>
 
-                <div className="col-md-2">
-                  <input className="form-control me-sm-2 mob-width" value={search} onChange={e=>setSearch(e.target.value)}
-                  type="search"
-                  placeholder="Search" 
-                   />
-                </div>
-                <div className="col-md-2">
-                  <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
-                    Search
-                  </button>
-                </div>
-              </div>
-
-              <div className="row">
-              {data.map((curElem) => {
-               const img = "venues/"+curElem.vid + ".jpg";
-                // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
-                return (
-          <div className="col-md-4" key={curElem.fid}>
-            <div className="card">
-              <div className="rating">{curElem.frating}</div>
-              <img src="images/cake1.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">{curElem.fname}</h5>
-                <p>{curElem.fcontent}</p>
-                <p class="price">{curElem.fprice}</p>
-              </div>
+            <div className="col-md-2">
+              <input className="form-control me-sm-2 mob-width" value={search} onChange={e => setSearch(e.target.value)}
+                type="search"
+                placeholder="Search"
+              />
+            </div>
+            <div className="col-md-2">
+              <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
+                Search
+              </button>
             </div>
           </div>
-            );
+
+          <div className="row">
+            {data.map((curElem) => {
+              const img = "venues/" + curElem.vid + ".jpg";
+              const path = `${curElem.fname}`;
+              // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
+              return (
+                <div className="col-md-4" key={curElem.fid}>
+                  <NavLink to={path} className="link">
+                  <div className="card">
+                    <div className="rating">{curElem.frating}</div>
+                    <img src="images/cake1.jpg" className="card-img-top" alt="..." />
+                    <div className="card-body">
+                      <h5 className="card-title">{curElem.fname}</h5>
+                      <p>{curElem.fdescription}</p>
+                      <p class="price">{curElem.fprice}</p>
+                    </div>
+                  </div>
+                </NavLink>
+                </div>
+              );
             })}
           </div>
-          </div>
+        </div>
 
-            <div className="row">
-              <div className="col-md-12 pagin">
-                <ul className="pagination justify-content-center">
-                  <li className="page-item disabled">
-                    <a className="page-link" href="#">
-                      &laquo;
-                    </a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      4
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      5
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      &raquo;
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </>
-        </Wrapper >
-        );
+        <div className="row">
+          <div className="col-md-12 pagin">
+            <ul className="pagination justify-content-center">
+              <li className="page-item disabled">
+                <a className="page-link" href="#">
+                  &laquo;
+                </a>
+              </li>
+              <li className="page-item active">
+                <a className="page-link" href="#">
+                  1
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  2
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  3
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  4
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  5
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  &raquo;
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </>
+    </Wrapper >
+  );
 }
 
-        const Wrapper = styled.div`
+const Wrapper = styled.div`
         /* Your existing styles and the added styles for the filter window */
+        .link{
+          text-decoration:none;
+        }
         .card-img-top{
           height:200px;
         }
@@ -578,6 +586,6 @@ function Venues() {
 
  `;
 
-        export default Venues;
+export default Venues;
 
 

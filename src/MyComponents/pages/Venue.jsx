@@ -69,7 +69,7 @@ function Venue() {
   const reviewData = async () => {
     try {
       const response = await fetch('http://localhost:4000/review', {
-        method: 'get',
+        method: 'post',
         headers: { 'Content-Type': 'application/json' },
       });
   
@@ -146,7 +146,7 @@ function Venue() {
               <button className="btn btn-primary">Photos</button>
             </div>
             <div className="col-md-3">
-              <button className="btn btn-primary ">Add to Packages</button>
+            <NavLink to="/Packages">  <button className="btn btn-primary ">Add to Packages</button></NavLink>
             </div>
             <div className="col-md-3">
             <NavLink to="/Review"><button className="btn btn-primary" >Write a review</button></NavLink>

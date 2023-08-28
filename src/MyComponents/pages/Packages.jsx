@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 
 
 function Packages() {
     const [data, setData] = useState([]);
+    const {category,name} = useParams();
     const collectData = async () => {
         try {
             const response = await fetch('http://localhost:4000/packages', {
@@ -42,6 +45,28 @@ function Packages() {
           console.error('Error fetching data:', error);
         }
       };
+      const addtopack = async () => {
+        var id = event.target.id;
+        
+        if(name!="General"){
+        try {
+          const response = await fetch('http://localhost:4000/addtopack', {
+            method: 'post',
+            body: JSON.stringify({name,id,category}),
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            // setData(data);
+          } else {
+            console.error('API response not okay:', response.status);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+        }
+      };
     useEffect(() => {
         collectData();
     }, []);
@@ -62,9 +87,7 @@ function Packages() {
                             <li className="nav-item" role="presentation">
                                 <a className="nav-link" data-bs-toggle="tab" href="#create" aria-selected="false" role="tab">Create Package</a>
                             </li>
-                            <li className="nav-item " role="presentation">
-                                <a className="nav-link " data-bs-toggle="tab" href="#add" aria-selected="false" role="tab">Add to Package</a>
-                            </li>
+                            
                         </ul>
                         <div id="myTabContent" className="tab-content">
                             <div className="tab-pane fade active show" id="packages" role="tabpanel">
@@ -73,7 +96,7 @@ function Packages() {
                                     return (
                                         <div className="container cust-cont" key={curElem.pid}>
                                             <div className='row'>
-                                                <div className='col-md-8'>
+                                                <div className='col-md-6'>
                                                     <div className='row'>
                                                         <div className='col-md-6'><h4>Package Name</h4></div>
                                                         <div className='col-md-6'><h4>Venue Name</h4></div>
@@ -83,8 +106,11 @@ function Packages() {
                                                         <div className='col-md-6'>{curElem.venue_name}</div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-4 view-btn-cont">
-                                                <NavLink to={`/Package/${curElem.pname}`}><div className='col-md-4'><button className='btn btn-primary view-btn'>View More</button></div></NavLink>
+                                                <div className="col-md-3 view-btn-cont">
+                                                    <NavLink to={`/Package/${curElem.pname}`}><div className='col-md-4'><button className='btn btn-primary view-btn'>View More</button></div></NavLink>
+                                                </div>
+                                                <div className="col-md-3 add-to-pkg-cont">
+                                                    <NavLink to={`/Package/${curElem.pname}`}><div className='col-md-4'><button className='btn btn-primary add-to-pkg-btn' id={curElem.pid} onClick={addtopack}>Add to Package</button></div></NavLink>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,32 +164,7 @@ function Packages() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="tab-pane fade " id="add" role="tabpanel">
-                                <br/>
-                                <h4>Select the Package to add</h4>
-                                {data.map((curElem) => {
-                                    const img = "venues/" + curElem.pid + ".jpg";
-                                    return (
-                                        <div className="container cust-cont" key={curElem.pid}>
-                                            <div className='row'>
-                                                <div className='col-md-8'>
-                                                    <div className='row'>
-                                                        <div className='col-md-6'><h4>Package Name</h4></div>
-                                                        <div className='col-md-6'><h4>Venue Name</h4></div>
-                                                    </div>
-                                                    <div className='row'>
-                                                        <div className='col-md-6'>{curElem.pname}</div>
-                                                        <div className='col-md-6'>{curElem.venue_name}</div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-4 view-btn-cont">
-                                                    <div className='col-md-4'><button className='btn btn-primary add-to-pkg-btn'>Add to Package</button></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -197,6 +198,12 @@ const Wrapper = styled.div`
     .view-btn{
         width:100px;
         white-space: nowrap;
+        background-color:#e61041;
+        border-width:0;
+    }
+    .view-btn:hover{
+        background-color:#c30733;
+
     }
     .create-btn{
         width:100px;
@@ -205,6 +212,16 @@ const Wrapper = styled.div`
     }
     .add-to-pkg-btn{
         white-space: nowrap;
+        background-color:#e61041;
+        border-width:0;
+
+    }
+    .add-to-pkg-cont{
+        padding-left:30px;
+
+    }
+    .add-to-pkg-btn:hover{
+        background-color:#c30733;
 
     }
 `;

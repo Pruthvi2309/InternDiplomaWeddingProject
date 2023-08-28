@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+
 
 function Venues() {
   const [data,setData]=useState([]);
@@ -329,12 +331,15 @@ function Venues() {
               <div className="row">
               {data.map((curElem) => {
                const img = "venues/"+curElem.mid + ".jpg";
+                const path = `${curElem.mname}`;
+
                 // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
                 return (
            <div className="col-md-4" key={curElem.mid}> 
+           <NavLink to={path} className="link">
            <div className="card">
             <div className="rating">{curElem.mrating}</div>
-              <img src="images/i1.jpg" className="card-img-top" alt="Makeup for Wedding" />
+              <img src="images/i1.jpg" className="card-img-top" />
               <div className="card-body">
                 <h5 className="card-title">{curElem.mname}</h5>
                 <p className="address">{curElem.mlocation}</p>
@@ -342,6 +347,7 @@ function Venues() {
                 <p className='type'>{curElem.mprice}</p>
             </div>
            </div>
+           </NavLink>
           </div>
             );
             })}
@@ -396,6 +402,9 @@ function Venues() {
 
 const Wrapper = styled.div`
 /* Your existing styles and the added styles htmlFor the filter window */
+.link{
+  text-decoration:none;
+}
 .card-img-top{
     height:200px;
 }

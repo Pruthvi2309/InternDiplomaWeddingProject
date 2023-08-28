@@ -1,116 +1,199 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+
 
 function Booking_header() {
+  const { vname, pname } = useParams();
+  var category = vname;
+  var name = pname;
+  const [data, setData] = useState([]);
+  const collectData = async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/vendor_details`, {
+        method: 'post',
+        body: JSON.stringify({ vname, pname }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const responseData = await response.json(); // Parse the response JSON
+      setData(responseData);
+      // Debugging line
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const [review, setReview] = useState([]);
+
+  const reviewData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/review', {
+        method: 'post',
+        body: JSON.stringify({ category, name }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const responseData = await response.json(); // Parse the response JSON
+      console.log(responseData);
+      setReview(responseData);
+      // Debugging line
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    reviewData();
+  }, []);
+
+  useEffect(() => {
+    collectData();
+  }, []);
   return (
     <Wrapper>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-12">
-            <h1 className=" title">Vendor Name</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <div id="carouselExampleCaptions" className="carousel slide">
-              <div className="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      {data.map((curElem) => {
+        var first_letter = vname[0].toLowerCase();
+        return (
+          <div className="container-fluid top-container" key={curElem[first_letter + "id"]}>
+            <div className="row">
+              <div className="col-md-12">
+                <h1 className=" title">{curElem[first_letter + "name"]}</h1>
               </div>
-              <div className="carousel-inner">
-                <div className="carousel-item active">
-                  <img src="images/i1.jpg" className="d-block imgs curved" alt="..." />
-                  <div className="carousel-caption d-none d-md-block content">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                  </div>
-                </div>
-                <div className="carousel-item">
-                  <img src="images/i2.jpg" className="d-block imgs curved" alt="..." />
-                  <div className="carousel-caption d-none d-md-block content">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                  </div>
-                </div>
-                <div className="carousel-item">
-                  <img src="images/i3.jpg" className="d-block imgs curved" alt="..." />
-                  <div className="carousel-caption d-none d-md-block content">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                  </div>
-                </div>
-              </div>
-              <button className="carousel-control-prev " type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
-              </button>
-              <button className="carousel-control-next " type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Next</span>
-              </button>
             </div>
-          </div>
-          <div className="col-md-6">
-            <div className="description">
-              <h2>Description</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium ea in neque sit sapiente consectetur praesentium sunt optio quisquam, incidunt fugit illo dolorum reiciendis eligendi molestiae non ipsum accusamus rerum? Error maiores exercitationem atque autem odio culpa ex itaque quibusdam dolor molestias, fugit consequatur animi tenetur! Modi aspernatur exercitationem cum
-              </p>
-            </div>
-            <div className="rating-reviews">
-              <h3>Rating and Reviews</h3>
-              <div className="rating-info">
-                <div className="star-rating">
-                  <h4>5 star</h4>
-                  <span className="star">&#9733;</span>
-                  <span className="star">&#9733;</span>
-                  <span className="star">&#9733;</span>
-                  <span className="star">&#9733;</span>
-                  <span className="star">&#9733;</span>
-                </div>
-                <div className="review-btn">
-                  <button className="btn btn-primary disabled" disabled>
-                    Add Review
+            <div className="row">
+              <div className="col-md-6">
+                <div id="carouselExampleCaptions" className="carousel slide">
+                  <div className="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                  </div>
+                  <div className="carousel-inner">
+                    <div className="carousel-item active">
+                      <img src="images/i1.jpg" className="d-block imgs curved" alt="..." />
+                      <div className="carousel-caption d-none d-md-block content">
+                        <h5>First slide label</h5>
+                        <p>Some representative placeholder content for the first slide.</p>
+                      </div>
+                    </div>
+                    <div className="carousel-item">
+                      <img src="images/i2.jpg" className="d-block imgs curved" alt="..." />
+                      <div className="carousel-caption d-none d-md-block content">
+                        <h5>Second slide label</h5>
+                        <p>Some representative placeholder content for the second slide.</p>
+                      </div>
+                    </div>
+                    <div className="carousel-item">
+                      <img src="images/i3.jpg" className="d-block imgs curved" alt="..." />
+                      <div className="carousel-caption d-none d-md-block content">
+                        <h5>Third slide label</h5>
+                        <p>Some representative placeholder content for the third slide.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="carousel-control-prev " type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                  </button>
+                  <button className="carousel-control-next " type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
                   </button>
                 </div>
               </div>
-              <div className="user-review">
-                <h6>User Name</h6>
-                <p>
-                  Review Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio saepe excepturi adipisci nostrum, nesciunt omnis reiciendis tempore temporibus corporis culpa?
-                </p>
-                <div className="view-more-btn">
-                  <button className="btn btn-primary">View more</button>
+              <div className="col-md-6">
+                <div className="description">
+                  <h2>Description</h2>
+                  <p>
+                    {curElem[first_letter + "description"]}
+                  </p>
+                </div>
+                <div className="rating-reviews">
+                  <h3>Rating and Reviews</h3>
+                  <div className="rating-info">
+                    <div className="star-rating">
+                      <h4>Average Rating: {curElem[first_letter + "rating"]}</h4>
+
+                      {Array.apply(null, { length: curElem[first_letter + "rating"] }).map((e, i) => (
+                        <span className="busterCards" key={i}>
+                          <span className="star">&#9733;</span>
+                          {e}
+                        </span>
+                      ))}
+                    </div>
+                   
+                  </div>
+                  <div className="user-review">
+
+                    {review.slice(0, 2).map((curElem) => {
+                      return (
+                        <div className="container">
+                          <div className="row" key={curElem.rid}>
+                            <div className='col-md-3'>
+                              <h6>{curElem.rname}</h6>
+
+                            </div>
+                            <div className="col-md-9 stars">
+                              {Array.apply(null, { length: curElem.rstar }).map((e, i) => (
+                                <span className="busterCards" key={i}>
+                                  <span className="star">&#9733;</span>
+                                  {e}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className='row'>
+                             <div className='col-md-12'>
+                              <p>
+                                {curElem.rcontent}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <div className="view-more-btn">
+                      <NavLink to={`/Review/${vname}/${curElem[first_letter + "name"]}`}><button className="btn btn-primary">View more</button></NavLink>
+                    </div>
+                  </div>
+                </div>
+                <div className="action-buttons">
+                  <div className="view-more-btn">
+                    <button className="btn btn-primary">Request Booking</button>
+                  </div>
+                  <div className="add-to-package-btn">
+                  <NavLink to={`/Packages/${category}/${curElem[first_letter + "name"]}`}><button className="btn btn-primary">Add to Package</button></NavLink>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="action-buttons">
-              <div className="view-more-btn">
-                <button className="btn btn-primary">View more</button>
-              </div>
-              <div className="add-to-package-btn">
-                <button className="btn btn-primary">Add to Package</button>
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+.stars{
+
+}
+.top-container{
+  padding-top:80px;
+  padding-bottom:80px;
+}
 .curved {
   border-radius: 20px;
 }
 .title {
   font-size: 36px;
-  color: #333;
+  color: #e61041;
   font-weight: bold;
   text-align: center;
   padding: 10px 0;
-  border-bottom: 2px solid #007bff;
   margin-bottom: 20px;
 }
 .p {
@@ -277,7 +360,7 @@ h6 {
 .title {
   font-size: 48px;
   font-family: 'Montserrat', sans-serif;
-  color: #007bff;
+  color: #e61041;
   text-align: center;
   padding: 10px 0;
   margin-bottom: 20px;

@@ -1,10 +1,14 @@
 
 import React, { useState, useEffect } from 'react'
-
+import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StarRatingSystem = () => {
-
+  const { category,name } = useParams();
+  var rcategory = category;
+  var rfor = name;
+  console.log(rcategory,rfor);
   const [data, setData] = useState([]);
   
   const [rating, setRating] = useState(0);
@@ -12,17 +16,17 @@ const StarRatingSystem = () => {
   const [content, setContent] = useState("");
   const collectData = async () => {
     try {
-      const response = await fetch('http://localhost:4000/review', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      const response = await fetch(`http://localhost:4000/review`, {
+        method: 'post',
+        body: JSON.stringify({ category,name }),
+        headers: { 'Content-Type': 'application/json' },
       });
-
+  
       const responseData = await response.json(); // Parse the response JSON
-      console.log('Response data from server:', responseData); // Debugging line
-
-      setData(responseData); // Set the fetched data to the state
+      console.log(responseData);
+      setData(responseData);
+       // Debugging line
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -83,15 +87,21 @@ const StarRatingSystem = () => {
   
   var rdate = dd + '/' + mm + '/' + yyyy;
   console.log(rdate);
-  const rname = "Neel";
-  console.log(star);
+  var items = localStorage.getItem("items");
+  console.log(items);
+  const uname = JSON.parse(items);
+  const rname = uname["uname"];
+  console.log(rname);
+  
 
   const sendReview = async () =>{
      var rstar = rating;
+     count++;
+     var average = ((sum + rstar)/count).toFixed(1);
      var rcontent = content;
     let result = await fetch('http://localhost:4000/addreview', {
         method: 'post',
-        body: JSON.stringify({rname,rdate,rstar,rcontent}),
+        body: JSON.stringify({rname,rdate,rstar,rcontent,rcategory,rfor,average,category,name}),
         headers: { 'Content-Type': 'application/json' },
     });
     console.log(result);

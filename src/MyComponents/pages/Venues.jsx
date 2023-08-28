@@ -169,7 +169,7 @@ function Venues() {
               <div className='row'>
                 <div className='col-md-12'>
                   <br />
-                  <input type="range" className="form-range" min="0" max="5" step="1" id="customRange3" value={range} onChange={e=>setRange(e.target.value)}/>
+                  <input type="range" className="form-range" min="0" max="5" step="1" id="customRange3" value={range} onChange={(e)=>setRange(e.target.value)}/>
                 </div>
               </div>
               <div className='row'>
