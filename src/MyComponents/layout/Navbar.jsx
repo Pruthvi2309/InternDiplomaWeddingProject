@@ -174,7 +174,7 @@ function Navbar() {
             <div className="dropdown-menu" data-popper-placement="bottom-start">
                   <NavLink to="/ProfileSettings" className="link"><a className="dropdown-item">My Profile</a></NavLink>
                   <a className="dropdown-item" href="#">Custom Packages</a>
-                  <a className="dropdown-item" href="#">Booking Requests</a>
+                  <NavLink to="/BookingRequest" className="link"><a className="dropdown-item">Booking Requests</a></NavLink>
                   <div className="dropdown-divider"></div>
                   <a className="dropdown-item" href="#">Settings</a>
             </div>

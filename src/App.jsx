@@ -36,17 +36,22 @@ import AboutUsmain from './MyComponents/pages/AboutUsmain'
 // import Table from './MyComponents/pages/Table'
 import BookingRequest from './MyComponents/pages/BookingRequest'
 import Chat from './MyComponents/pages/chat'
+import GroomWear from './MyComponents/pages/Groom_wear'
+import Wedding_Decor from './MyComponents/pages/Wedding_Decor'
 function App() {
   
 
   return (
     <>
     {/* <Hello/> */}
-    <Chat/>
+    {/* <Chat/> */}
     {/* <BookingRequest/> */}
     {/* Wrapper Class */}
+    {/* <GroomWear/> */}
+    {/* <Payments/> */}
+    {/* <Wedding_Decor/> */}
 
-   {/* <Navbar/>
+   <Navbar/>
     <Routes>
       <Route path="/" element={<Home/>}></Route>
       <Route path="/Contact" element={<ContactUs/>}></Route>
@@ -69,9 +74,13 @@ function App() {
       <Route path="/Prewedding" element={<Prewedding/>}></Route>  
       <Route path="/Pandits1" element={<Pandits1/>}></Route>  
       <Route path="/AboutUsmain" element={<AboutUsmain/>}></Route>  
-    </Routes>  */}
+      <Route path="/BookingRequest" element={<BookingRequest/>}></Route>  
+      <Route path="/GroomWear" element={<GroomWear/>}></Route>  
+      <Route path="/Wedding_Decor" element={<Wedding_Decor/>}></Route>  
+      <Route path="/Chat" element={<Chat/>}></Route>  
+    </Routes> 
+    <Footer/>
     {/* <Table/> */}
-    {/* <Footer/> */}
     </>
   )
 }
