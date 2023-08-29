@@ -211,7 +211,7 @@ const Wrapper = styled.div`
     z-index:3;
     
   }
-}cd
+}
   `;
 export default Dancers;
 
