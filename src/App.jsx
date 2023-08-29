@@ -32,6 +32,10 @@ import Packages from './MyComponents/pages/Packages'
 import Food from './MyComponents/pages/Food'
 import Package from './MyComponents/pages/Package'
 import Profile from './MyComponents/pages/ProfileSettings'
+import Decor from './MyComponents/pages/Wedding_Decor'
+import Groom from './MyComponents/pages/Groom_wear'
+import Chat from './MyComponents/pages/Chat'  
+
 function App() {
   
 
@@ -56,12 +60,16 @@ function App() {
       <Route path="/Review/:category/:name" element={<Review/>}></Route> 
       <Route path="/Payment" element={<Payments/>}></Route> 
       <Route path="/Photography" element={<Photography/>}></Route> 
+      <Route path="/Decor" element={<Decor/>}></Route> 
+      <Route path="/Groom" element={<Groom/>}></Route> 
       <Route path="/Makeup" element={<Makeup/>}></Route> 
       <Route path="/Aboutus" element={<Aboutus/>}></Route> 
       <Route path="/Packages/:category/:name" element={<Packages/>}></Route> 
       <Route path="/Package/:pname" element={<Package/>} />
       <Route path="/Food" element={<Food/>} />
       <Route path="/ProfileSettings" element={<Profile/>}/>
+      <Route path="/BookingRequest" element={<BookingRequest/>}/>
+      <Route path="/Chat" element={<Chat/>}/>
     </Routes>
    
     <Footer/>

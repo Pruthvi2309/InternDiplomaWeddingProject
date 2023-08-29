@@ -12,11 +12,13 @@ const Signup = () => {
 
   const collectData = async () => {
     if(password==Confirmpassword){
-      
+      var profname = uname;
+      var profemail = uemail;
+  
       console.log(password);
     let result = await fetch('http://localhost:4000/signup', {
         method: 'post',
-        body: JSON.stringify({uname, uemail, password}),
+        body: JSON.stringify({profname, profemail, password}),
         headers: { 'Content-Type': 'application/json' },
     });
     console.log(result);

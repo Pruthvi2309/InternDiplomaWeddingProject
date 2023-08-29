@@ -12,10 +12,11 @@ const { log } = require('console');
 
 app.post("/signup",(req,res)=>{
     const data=req.body;
-    con.query("insert into user_info SET?",data,(error,result)=>{
+    con.query("insert into profilesetting SET ?",data,(error,result)=>{
         if(error)
         {
             res.send("error in connecting api")
+            console.log(error);
         }
         else
         {
@@ -30,7 +31,7 @@ app.post("/signup",(req,res)=>{
 app.post('/login', (req, res) => {
     const { uname, password } = req.body;
     
-    con.query('SELECT * FROM user_info WHERE uname = ? AND password = ?', [uname, password], (error, result) => {
+    con.query('SELECT * FROM profilesetting WHERE profname = ? AND password = ?', [uname, password], (error, result) => {
       if (error) {
         res.send({ success: false, message: 'Error in connecting to API' });
       } else {
@@ -509,7 +510,11 @@ app.post("/vendor_details", (req, res) => {
 app.post("/profilesetting",(req,res)=>{
   const data=req.body;
   console.log(data);
-  con.query("insert into profilesetting SET ?",data,(error,result)=>{
+  var num = data["new_num"];
+  delete data.new_num;
+  console.log(num);
+  if(num == '1'){
+      con.query("insert into profilesetting SET ?",data,(error,result)=>{
       if(error)
       {
           res.send("error in connecting api")
@@ -519,6 +524,18 @@ app.post("/profilesetting",(req,res)=>{
           res.send(result)
       }
   })
+  }else{
+    con.query("UPDATE profilesetting SET ?",data,(error,result)=>{
+      if(error)
+      {
+          res.send("error in connecting api")
+      }
+      else
+      {
+          res.send(result)
+      }
+  })
+  }
   
   
 });
@@ -526,8 +543,11 @@ app.post("/profilesetting",(req,res)=>{
 // retrive existing data
 
 app.post("/get_user_data", (req, res) => {
+  var name = req.body["name"];
+  var name = name.replace('\"','');
+  console.log(name);
   // const name = req.body;
-  con.query(`SELECT * FROM profilesetting where profname='Tanish'`, (error, result) => {
+  con.query(`SELECT * FROM profilesetting where profname='${name}'`, (error, result) => {
     if (error) {
       res.send({message: 'Error in connecting to API' });
       console.log(error);
@@ -602,5 +622,375 @@ app.post("/searchjwell", (req, res) => {
     }
   });
 });
+
+// Mehendi
+app.get("/Mehendi", (req, res) => {
+
+  con.query('SELECT * FROM mehendi', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+// filter_mehendi
+app.post("/filter_mehendi", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM mehendi WHERE 1"; // Start with a true condition
+  
+  if (range >= 0) {
+    var range_arr = [[1000,2500],[2500,5000],[5000,7500],[7500,9000],[9000,11500]]; 
+    query = query + ` AND mprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND mcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// search Mehendi
+
+app.post("/search_mehendi", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM mehendi where mname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+//Pandits
+app.get("/Pandits", (req, res) => {
+
+  con.query('SELECT * FROM pandits', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// filter_pandits
+app.post("/filter_pandits", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM pandits WHERE 1"; // Start with a true condition
+  
+  if (range >= 0) {
+    var range_arr = [[10000,25000],[25000,50000],[50000,75000],[75000,9000],[90000,115000]]; 
+    query = query + ` AND pprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND pcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// search Pandits
+app.post("/search_pandits", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM pandits where pname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Dj
+app.get("/DJ", (req, res) => {
+
+  con.query('SELECT * FROM dj', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// Dj filters
+app.post("/filter_dj", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM dj WHERE 1"; // Start with a true condition
+  if (range >= 0) {
+    var range_arr = [[10000,25000],[25000,50000],[50000,75000],[75000,9000],[90000,115000]];  
+    query = query + ` AND dprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND dcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Dj Search
+app.post("/djsearch", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM dj where dname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Dancers
+app.get("/Dance", (req, res) => {
+
+  con.query('SELECT * FROM dancers', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// filter Dance
+app.post("/filter_dance", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM dancers WHERE 1"; // Start with a true condition
+  
+  if (range >= 0) {
+    var range_arr = [[10000,25000],[25000,50000],[50000,75000],[75000,9000],[90000,115000]];  
+    query = query + ` AND dprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND dcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Dance Search
+app.post("/dancesearch", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM  dancers where dname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// GroomWear
+app.get("/groomwear", (req, res) => {
+
+  con.query('SELECT * FROM groom', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// filter Groom_wear
+app.post("/filter_gromwear", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM groom WHERE 1"; 
+  
+  if (range >= 0) {
+    var range_arr = [[10000,25000],[25000,50000],[50000,75000],[75000,90000],[90000,115000]];  
+    query = query + ` AND gprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND gcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// GroomWear Search
+app.post("/groomwearsearch", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM  groom where gname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Weddingdecro
+app.get("/weddingdecro", (req, res) => {
+
+  con.query('SELECT * FROM decor', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
+
+// filter Weddingdecro
+app.post("/filter_weddingdecro", (req, res) => {
+  const { range, drop } = req.body;
+  var query = "SELECT * FROM decor WHERE 1"; 
+  
+  if (range >= 0) {
+    var range_arr = [[10000,25000],[25000,50000],[50000,75000],[75000,90000],[90000,115000]];  
+    query = query + ` AND dprice BETWEEN ${range_arr[range][0]} AND ${range_arr[range][1]}`;
+  }
+  if (drop !="") {
+    // var drop_arr=[["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"]];
+    query=query+` AND dcity = '${drop}'`;
+  }
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// Weddingdecro Search
+app.post("/weddingdecrosearch", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM  decor where dname like '%${search}%'`;
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// filter prewed
+
+app.post("/prewedfilter", (req, res) => {
+  const { rating, budget, check } = req.body;
+  var query = "SELECT * FROM prewedding WHERE 1"; // Start with a true condition
+  
+  console.log("hi"+check);
+  if (budget >= 0) {
+    var budget_arr = [[0, 200000], [200000, 300000], [300000, 500000], [500000, 1000000], [1000000, 1500000], [1500000, 2000000]]; 
+    query = query + ` AND pprice BETWEEN ${budget_arr[budget][0]} AND ${budget_arr[budget][1]}`;
+  }
+  if (check.length > 0) {
+    query = query + ` AND machine IN ('${check.join("','")}')`;
+  }
+  if (rating >= 0) {
+    var rating_arr = [[0, 3], [3, 4], [4, 4.5], [4.5, 4.8], [4.8, 5]]; 
+    query = query + ` AND prating BETWEEN ${rating_arr[rating][0]} AND ${rating_arr[rating][1]}`; 
+  }
+
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+// searchprewed
+
+app.post("/searchprewed", (req, res) => {
+  const search = req.body["search"];
+  console.log(search);
+  var query = `SELECT * FROM prewedding where pname like '%${search}%'`
+  console.log(query);
+  con.query(query, (error, result) => {
+    if (error) {
+      res.send({ message: 'Error in connecting to API' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+//prewed
+
+app.get("/prewed", (req, res) => {
+
+  con.query('SELECT * FROM prewedding', (error, result) => {
+    if (error) {
+      res.send({message: 'Error in connecting to API' });
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+  
+})
 
 app.listen(4000);

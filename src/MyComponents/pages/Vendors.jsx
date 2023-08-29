@@ -158,6 +158,7 @@ function Vendors() {
                     <li>Bridal Jewelry</li>
                     <li>Accessories</li>
                     <li>Jewelry Customization</li>
+                    <li>Rental Jewellery</li>
                   </ul>
                 </div>
               </div>
@@ -221,6 +222,8 @@ function Vendors() {
             </NavLink>
           </div>
           <div className="col-md-4">
+          <NavLink to="/Groom" className="link">
+            
             <div className="vendor-card">
               <img
                 src="images/GroomWear.jpg"
@@ -243,6 +246,7 @@ function Vendors() {
                 </div>
               </div>
             </div>
+            </NavLink>
           </div>
         </div>
 
@@ -355,6 +359,8 @@ function Vendors() {
 
           </div>
           <div className="col-md-4">
+          <NavLink to="/Decor" className="link">
+
             <div className="vendor-card">
               <img
                 src="images/Decorator.jpg"
@@ -377,6 +383,7 @@ function Vendors() {
                 </div>
               </div>
             </div>
+            </NavLink>
           </div>
           <div className="col-md-4">
           <NavLink to="/Mehendi" className="link">

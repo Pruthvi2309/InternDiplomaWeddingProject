@@ -395,7 +395,7 @@ const Wrapper = styled.section`
 
 .about-us {
     height: 10px;
-    width:105%;
+    width:102%;
     margin-bottom:400px;
     margin-top:60px;
   }
@@ -410,7 +410,6 @@ const Wrapper = styled.section`
   
   .image-container img {
     max-width: 100%;
-
     height: 320px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -546,11 +545,9 @@ const Wrapper = styled.section`
   }
   .image-container{
     width:400px;
-    
   }
   .image-container img {
     max-width:120%;
-    
     height: 330px;
     margin-left:-40px;
     margin-top:-40px;
@@ -568,8 +565,25 @@ const Wrapper = styled.section`
   .about-us{
      margin-bottom:700px;
   }
+  .arrow-btn-cir1{
+    background-color:black;
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin-top:158px;
+    margin-left:8px;
+  }
+  .arrow-btn-cir2{
+    background-color:black;
+    border-radius:50%;
+    width:50px;
+    height:50px;
+    margin-top:158px;
+    margin-right:8px;
+  }
+  
   
  
-}                     
+}                     
 `
 export default Home

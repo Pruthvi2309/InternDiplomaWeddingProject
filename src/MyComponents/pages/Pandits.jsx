@@ -1,134 +1,256 @@
-
-import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 function Pandits() {
-  const pandits = [
-    {
-      id: 1,
-      name: 'Pandit Ramesh Sharma',
-      address: '123 Main St, City, Country',
-      specialization: 'Vedic rituals and customs',
-      contact: 'panditramesh@example.com',
-      price: 10000,
-    },
-    {
-      id: 2,
-      name: 'Pandit Meena Patel',
-      address: '456 First Ave, Town, Country',
-      specialization: 'Inclusive approach to weddings',
-      contact: 'panditmeena@example.com',
-      price: 12000,
-    },
-    {
-      id: 3,
-      name: 'Pandit Sanjay Verma',
-      address: '789 Lake Rd, Village, Country',
-      specialization: 'Ancient scriptures and mantras',
-      contact: 'panditsanjay@example.com',
-      price: 15000,
-    },
-    // Add more Pandits here...
+ 
+
+  
+  const [data,setData]=useState([]);
+  const [range,setRange] = useState(-1);
+  const [drop,setDrop] = useState("");
+  // const [check,setCheck] = useState([]);
+  // const [budget,setBudget] = useState(-1);
+  const [search,setSearch] = useState("");
+  const range_arr = ["10000-25000","25000-50000","50000-75000","75000-90000","90000-115000","115000+"];
+  const rating_arr = ["<3","3-4","4-4.5","4.5-4.8","4.8-5"];
+  const budget_arr = ["<=25K","25K-50K","50K-1L","1L-2L","2L-5L","5L+"];
+  const [selectedVenues, setSelectedVenues] = useState([]);
+  const collectData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/Pandits', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const responseData = await response.json(); // Parse the response JSON
+      console.log('Response data from server:', responseData); // Debugging line
+  
+      setData(responseData); // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const options = ["Nadiad", "Anand", "Mumbai","Vadodara","Navsari","Bhavnagar"];
+  
+
+  const filters = () => {
+    // Add your filter logic here
+    console.log('Applying filters...');
+    console.log('Range:', range);
+    console.log('Drop:', drop);
+    // console.log('Rating:', radio);
+    // console.log('Selected Venues:', selectedVenues);
+    // console.log('Budget:', budget);
+    // console.log("sending data");
+    // if(range!=-1)
+    // document.getElementById("filter1").style="display:block";
+    // if(radio!=-1)
+    // document.getElementById("filter2").style="display:block";
+    // if(check.length != 0)
+    // document.getElementById("filter3").style="display:block";
+    // if(budget!=-1)
+    // document.getElementById("filter4").style="display:block";
+    sendData();
+  };
+  const reset = () => {
+    // document.getElementById("filter1").style="display:none";
+    // document.getElementById("filter2").style="display:none";
+    // document.getElementById("filter3").style="display:none";
+    // document.getElementById("filter4").style="display:none";
+    collectData();
+  };
+  useEffect(()=>{ 
+      console.log("collecting data");
+      collectData();
+      
+    // toggleVenue();
+  },[]);
+
+  // useEffect(() => {
+  //   console.log('Selected Venues:', selectedVenues);
+  //   setCheck(selectedVenues);
+  // }, [selectedVenues]);
+
+  
+  // const toggleVenue = (venue) => {
+  //   setSelectedVenues(prevSelectedVenues => {
+  //     if (prevSelectedVenues.includes(venue)) {
+  //       return prevSelectedVenues.filter(v => v !== venue);
+  //     } else {
+  //       return [...prevSelectedVenues, venue];
+  //     }
+      
+  //   });
+  //   //  console.log(selectedVenues);
+  // }
+
+  const venueTypes = [
+    '4 Star+ Hotels', 'Banquet Halls', 'FarmHouses', 
+    'Hotel', 'Resort', 'Restaurant', 
+    'Destination Wedding', 'Heritage Property'
   ];
-
-  const cities = [
-    'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', // Add more cities...
-  ];
-
-  const itemsPerPage = 3;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(pandits.length / itemsPerPage);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  
+  
+  const sendData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/filter_pandits', {
+        method: 'post',
+        body: JSON.stringify({ range, drop }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data=");
+        
+        setData(data);
+        console.log("data="+data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const searchData = async () => {
+    console.log(search);
+    try {
+      const response = await fetch('http://localhost:4000/search_pandits', {
+        method: 'post',
+        body: JSON.stringify({ search }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data="+data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      } 
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPandits = pandits.slice(startIndex, endIndex);
-
-  const handleFilter = () => {
-    // Implement your filter logic here...
-  };
 
   return (
     <Wrapper>
-       <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-            
-       Filters
-     </button>
-    <div className='top'>
-      <div className="offcanvas offcanvas-start " tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div className="offcanvas-header">
-          <h1 className="offcanvas-title" id="offcanvasExampleLabel">Filters</h1>
-          <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div className="offcanvas-body">
-          <h3>Price Range</h3>
-          <fieldset className="form-group">
-            <legend className="mt-4">Ranges</legend>
-            <label htmlFor="customRange1" className="form-label">Example range</label>
-            <input type="range" className="form-range" id="customRange1" />
-          </fieldset>
-
-          <h3>Cities</h3>
-          <select className="form-select mb-3">
-            {cities.map((city, index) => (
-              <option key={index} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
-
-          <button type="submit" className="btn btn-primary" onClick={handleFilter}>
-            Apply Filters
-          </button>
-        </div>
-      </div>
-
-      <br />
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8">
+      <div className='top-container'>
+      <a
+        className="btn btn-primary btn-filters"
+        data-bs-toggle="offcanvas"
+        href="#offcanvasExample"
+        role="button"
+        aria-controls="offcanvasExample"
+      >
+        Filters
+      </a>
+      <div className="row">
+          <div className="col-md-8 pad">
             <h1>Pandits</h1>
           </div>
           <div className="col-md-2">
             <input
               className="form-control me-sm-2 mob-width"
               type="search"
-              placeholder="Search"
+              placeholder="Search" value={search} onChange={(e)=>setSearch(e.target.value)}
             />
           </div>
           <div className="col-md-2">
-            <button className="btn btn-primary mob-btn" type="submit">
+            <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
               Search
             </button>
           </div>
         </div>
+
+      <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div className="offcanvas-header">
+          <h1 className="offcanvas-title" id="offcanvasExampleLabel">Filters</h1>
+          <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div className="offcanvas-body">
+        <div className='row'>
+                <div className='col-md-12'>
+                  Select Price 
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-md-12'>
+                  <br />
+                  <input type="range" className="form-range" min="0" max="5" step="1" id="customRange3" value={range} onChange={(e)=>setRange(e.target.value)} />
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>10000-25000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>25000-50000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>50000-75000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>75000-90000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>90000-115000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicator'><b>115000+</b></div>
+                </div>
+              </div>
+
+              <div className='row'>
+              <div className='col-md-12'>
+                  Select City
+                </div>
+                <div className='col-md-12'>
+                  <br />
+                  <select
+                     className="form-control width" 
+                     id="country"
+                     onChange={(e) => setDrop(e.target.value)}
+                    defaultValue={drop}
+                   >
+                    {options.map((option, idx) => (
+                     <option key={idx}>{option}</option>
+                   ))}
+                  </select>
+                </div>
+                </div>
+
+                <button type="submit" className="btn btn-primary mt-3 mb-3" onClick={filters}>Apply</button>&nbsp; 
+          <button type="submit" className="btn btn-primary mt-3 mb-3" onClick={reset}>Reset</button>
+        </div>
+      </div>
+      </div>
+      <br />
+      <div className="container">
         <div className="row">
-          {currentPandits.map((pandit) => (
-            <div className="col-md-4" key={pandit.id}>
+        {data.map((curElem) => {
+               const img = "venues/"+curElem.vid + ".jpg";
+                const path = `${curElem.pname}`;
+
+                // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
+                return (
+            <div className="col-md-4" key={curElem.pid}>
+                <NavLink to={path} className="link">
               <div className="card">
-                {/* Add the pandit's image */}
+                {/* Add the curElem's image */}
                 <img
-                  src="images\3.jpg" // Replace this with the pandit's image
+                  src="images\download.jfif" // Replace this with the curElem's image
                   className="card-img-top"
                   alt="..."
                 />
                 <div className="card-body">
-                  <h5 className="card-title">{pandit.name}</h5>
-                  <p className="address">{pandit.address}</p>
-                  <p className="type">{pandit.specialization}</p>
-                  <p className="price">Price: ₹{pandit.price} onwards</p>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <p className="veg-price">{pandit.contact}</p>
-                    </div>
-                  </div>
+                  <h5 className="card-title">{curElem.pname}</h5>
+                  <p className="address">{curElem.pcity}</p>
+                  <p className="type">{curElem.pprice}</p>
+
+                  
                   <div className="row">
                     <div className="col-md-6">
                       <div className="btn-container">
@@ -140,21 +262,75 @@ function Pandits() {
                   </div>
                 </div>
               </div>
+              </NavLink>
             </div>
-          ))}
+                            );
+                          })}
+            
+          
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12 pagin">
-          {/* ... (pagination code) */}
+          <div className="col-md-12 pagin">
+            <ul className="pagination justify-content-center">
+              <li className="page-item disabled">
+                <a className="page-link" href="#">
+                  &laquo;
+                </a>
+              </li>
+              <li className="page-item active">
+                <a className="page-link" href="#">
+                  1
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  2
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  3
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  4
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  5
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  &raquo;
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+.link{
+  text-decoration:none;
+}
+.top-container{
+ 
+  padding-top: 60px;
+  height:127px;
+  // padding-left: 40px;
+  margin-bottom: 80px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+.pagin{
+  margin-top:20px;
+}
   .btn-filters {
     padding: 10px 20px;
     margin: 20px;
@@ -208,10 +384,7 @@ font-size: 14px;
     }
   }
     /* Add your other styling here */
-  .top{
-    position:absolute;
-    margin-top:50px;
-  }
+  
 `;
 
 export default Pandits;

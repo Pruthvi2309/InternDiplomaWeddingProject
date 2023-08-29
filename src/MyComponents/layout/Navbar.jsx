@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 
 function Navbar() {
-  const [search,setSearch] = useState("");
+  const [search, setSearch] = useState("");
   // const searching = async() =>{
   //     console.log(search);
   //     try {
@@ -16,7 +16,7 @@ function Navbar() {
   //       });
   //       if (response.ok) {
   //         const data = await response.json();
-          
+
   //       } else {
   //         console.error('API response not okay:', response.status);
   //       }
@@ -24,209 +24,226 @@ function Navbar() {
   //       console.error('Error fetching data:', error);
   //     }
   //   };  
-  
-  var items = localStorage.getItem("items");
-  console.log(items);
-  const uname = JSON.parse(items);
-  console.log(uname);
-  var name = "";
-  if(uname==null){
-    name = "";
-  }
-  else{
-    name = uname["uname"];
-  }
   const logout = () => {
     localStorage.clear();
   }
+  const [name, setName] = useState("");
+  const login = () =>{
+    var get_name = localStorage.getItem("name");
+    if (get_name != null) {
+      var get_name = get_name.slice(1, -1);
+      console.log("logged-in")
+      setName(get_name);
+      document.getElementById("logged-in").style = "display:block";
+        
+    }
+  }
+  
+  useEffect(() => {
+   login()
+  },[]);
+
   return (
-  <Wrapper>
-    <style>
+    <Wrapper>
+      <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=REM&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=REM&display=swap');
 
       </style>
-       <nav className="navbar navbar-expand-lg bg">
-          <div className="container-fluid">
-              <NavLink to="/"><button className="navbar-brand logo">Wedding.com</button></NavLink>
-              <button className="navbar-toggler nav-icon" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon "></span>
-              </button>
-               <div className="collapse navbar-collapse" id="navbarColor01">
-               <ul className="navbar-nav me-auto txt">
-                     
-                                      {/* Venues */}
+      <nav className="navbar navbar-expand-lg bg">
+        <div className="container-fluid">
+          <NavLink to="/"><button className="navbar-brand logo">Wedding.com</button></NavLink>
+          <button className="navbar-toggler nav-icon" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon "></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarColor01">
+            <ul className="navbar-nav me-auto txt">
 
-                     <li className="nav-item">
-                     <div className="dropdown-container">
-                        <NavLink to="/Venues"><button className="dropdown-button">Venues</button></NavLink>
-                        <div className="dropdown-content venues">
-                          <div className='row'>
-                            <div className="col-md-6">
-                            <div className="in-drop">By Type</div>  
+              {/* Venues */}
 
-                              <a href="#">Banquet Hall</a>
-                              <a href="#">Resort</a>
-                              <a href="#">Lawns/Farmhouses</a>
-                              <a href="#">Party Halls</a>
-                              <a href="#">Destination Wedding</a>
-                              <a href="#">4 star and above Hotels</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                          
-                            <div className="col-md-6">
-                            <div className="in-drop">By City</div>  
-                              <a href="#">Mumbai</a>
-                              <a href="#">Banaglore</a>
-                              <a href="#">New Delhi</a>
-                              <a href="#">Kolkata</a>
-                              <a href="#">Ludhiana</a>
-                              <a href="#">Nashik</a>
-                              <a href="#">Hyderabad</a>
-                              <a href="#">Ahemdabad</a>
-                              <a href="#"><b>More</b></a>
-                            </div>
-                          </div>
-                        </div>
+              <li className="nav-item">
+                <div className="dropdown-container">
+                  <NavLink to="/Venues"><button className="dropdown-button">Venues</button></NavLink>
+                  <div className="dropdown-content venues">
+                    <div className='row'>
+                      <div className="col-md-6">
+                        <div className="in-drop">By Type</div>
+
+                        <a href="#">Banquet Hall</a>
+                        <a href="#">Resort</a>
+                        <a href="#">Lawns/Farmhouses</a>
+                        <a href="#">Party Halls</a>
+                        <a href="#">Destination Wedding</a>
+                        <a href="#">4 star and above Hotels</a>
+                        <a href="#"><b>View All</b></a>
                       </div>
-                     </li>
 
-                                      {/* Vendors */}
-
-                     <li className="nav-item">
-                     <div className="dropdown-container">
-                        <NavLink to="/Vendors"><button className="dropdown-button">Vendors</button></NavLink>
-                        <div className="dropdown-content vendors">
-                          <div className="row">
-                            <div className="col-md-3">
-                              <div className="in-drop">Photographers</div>
-                              <a href="#">Photographers</a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Bridal Wear</div>  
-                              <a href="#">Bridal Lehengas</a>
-                              <a href="#">Kanjeevaram/Silk Sarees</a>
-                              <a href="#">Cocktail Gowns</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Jewellery & Accessories</div>
-                              <a href="#">Jewellery</a>
-                              <a href="#">Flower Jewellery</a>
-                              <a href="#">Bridal Jewllery on rent</a>
-                              <a href="#">Accessories</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop" >Food</div>
-                              <a href="#">Catering Services</a>
-                              <a href="#">Cake</a>
-                              <a href="#">Chaat and food stals</a>
-                              <a href="#">Bartenders</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-3">
-                              <div className="in-drop">Makeup</div>
-                              <a href="#">Bridal Makeup</a>
-                              <a href="#">Family Makeup</a>
-                              
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Groom Wear</div>  
-                              <a href="#">Sherwani</a>
-                              <a href="#">Wedding Suits/Tuxes</a>
-                              <a href="#">Sherwani on rent</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Invites & Gifts</div>
-                              <a href="#">Invitations</a>
-                              <a href="#">Favors</a>
-                              <a href="#">Invitations Gifts</a>
-                              <a href="#">Mehendi Favors</a>
-                              <a href="#"><b>View All</b></a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop" >Pandits</div>
-                              <a href="#">Wedding Padits</a>
-                              
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-3">
-                              <div className="in-drop">Pre-wedding Shoot</div>
-                              <a href="#">Pre-wedding Shoot Locations</a> 
-                              <a href="#">Pre-wedding Photogrphers</a> 
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Music & Dance</div>  
-                              <a href="#">DJs</a>
-                              <a href="#">Sangeet Choreographer</a>
-                              <a href="#">Wedding Entertainment</a>
-                              
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Planning and Decor</div>
-                              <a href="#">Wedding Planners</a>
-                              <a href="#">Decorators</a>
-                              <a href="#">Small Function Decor</a>
-                            </div>
-                            <div className="col-md-3">
-                            <div className="in-drop">Mehendi</div>
-                              <a href="#">Mehendi</a>
-                            </div>
-                          </div>  
-                        </div>
+                      <div className="col-md-6">
+                        <div className="in-drop">By City</div>
+                        <a href="#">Mumbai</a>
+                        <a href="#">Banaglore</a>
+                        <a href="#">New Delhi</a>
+                        <a href="#">Kolkata</a>
+                        <a href="#">Ludhiana</a>
+                        <a href="#">Nashik</a>
+                        <a href="#">Hyderabad</a>
+                        <a href="#">Ahemdabad</a>
+                        <a href="#"><b>More</b></a>
                       </div>
-                     </li>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              {/* Vendors */}
+
+              <li className="nav-item">
+                <div className="dropdown-container">
+                  <NavLink to="/Vendors"><button className="dropdown-button">Vendors</button></NavLink>
+                  <div className="dropdown-content vendors">
+                    <div className="row">
+                      <div className="col-md-3">
+                        <div className="in-drop">Photographers</div>
+                        <a href="#">Photographers</a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Bridal Wear</div>
+                        <a href="#">Bridal Lehengas</a>
+                        <a href="#">Kanjeevaram/Silk Sarees</a>
+                        <a href="#">Cocktail Gowns</a>
+                        <a href="#"><b>View All</b></a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Jewellery & Accessories</div>
+                        <a href="#">Jewellery</a>
+                        <a href="#">Flower Jewellery</a>
+                        <a href="#">Bridal Jewllery on rent</a>
+                        <a href="#">Accessories</a>
+                        <a href="#"><b>View All</b></a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop" >Food</div>
+                        <a href="#">Catering Services</a>
+                        <a href="#">Cake</a>
+                        <a href="#">Chaat and food stals</a>
+                        <a href="#">Bartenders</a>
+                        <a href="#"><b>View All</b></a>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-3">
+                        <div className="in-drop">Makeup</div>
+                        <a href="#">Bridal Makeup</a>
+                        <a href="#">Family Makeup</a>
+
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Groom Wear</div>
+                        <a href="#">Sherwani</a>
+                        <a href="#">Wedding Suits/Tuxes</a>
+                        <a href="#">Sherwani on rent</a>
+                        <a href="#"><b>View All</b></a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Invites & Gifts</div>
+                        <a href="#">Invitations</a>
+                        <a href="#">Favors</a>
+                        <a href="#">Invitations Gifts</a>
+                        <a href="#">Mehendi Favors</a>
+                        <a href="#"><b>View All</b></a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop" >Pandits</div>
+                        <a href="#">Wedding Padits</a>
+
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-3">
+                        <div className="in-drop">Pre-wedding Shoot</div>
+                        <a href="#">Pre-wedding Shoot Locations</a>
+                        <a href="#">Pre-wedding Photogrphers</a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Music & Dance</div>
+                        <a href="#">DJs</a>
+                        <a href="#">Sangeet Choreographer</a>
+                        <a href="#">Wedding Entertainment</a>
+
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Planning and Decor</div>
+                        <a href="#">Wedding Planners</a>
+                        <a href="#">Decorators</a>
+                        <a href="#">Small Function Decor</a>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="in-drop">Mehendi</div>
+                        <a href="#">Mehendi</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
 
 
-                                           {/* Abouts Us */}
+              {/* Abouts Us */}
 
-                         <NavLink to="/AboutUsmain" className="link"><button  className="aboutus">About Us</button></NavLink>
+              <NavLink to="/AboutUs" className="link"><button className="aboutus">About Us</button></NavLink>
 
-                                            {/* Contact Us */}
-                                          
-                         <NavLink to="/Contact"><button href="#" className="contactus">Contact Us</button></NavLink>
+              {/* Contact Us */}
+
+              <NavLink to="/Contact"><button href="#" className="contactus">Contact Us</button></NavLink>
 
 
-              </ul>
-              <form className="d-flex search">
-                   <input className="form-control me-sm-2 searchbar" type="search" placeholder="Search" value={search} onChange={(e)=>setSearch(e.target.value)}/>
-                   <button type="submit" className="search-icon"><i className="fa fa-search"></i></button>
-              </form>
+            </ul>
+            <form className="d-flex search">
+              <input className="form-control me-sm-2 searchbar" type="search" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <button type="submit" className="search-icon"><i className="fa fa-search"></i></button>
+            </form>
 
-                                      {/* Resigter & Login Buttons */}
+            {/* Resigter & Login Buttons */}
 
-           <form>
-               <NavLink to="/Signup"><button className="btn btn-reg my-2 my-sm-0" type="submit">Register</button></NavLink>
-               <NavLink to="/Login"><button className="btn  btn-log my-2 my-sm-0" type="submit">Login</button></NavLink>
-           </form>
-            <div className="user-name"><b>{name}</b></div>
-           <div className="nav-item dropdown width">
-             <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="../images/profile.png"/>
-            <div className="dropdown-menu" data-popper-placement="bottom-start">
-                  <NavLink to="/ProfileSettings" className="link"><a className="dropdown-item">My Profile</a></NavLink>
-                  <NavLink to="/Packages/Profile/General" className="link"><a className="dropdown-item" href="#">Custom Packages</a></NavLink>
-                  <a className="dropdown-item" href="#">Booking Requests</a>
-                  <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" onClick={logout}>Log out</a>
+            <form>
+              <NavLink to="/Signup"><button className="btn btn-reg my-2 my-sm-0" type="submit">Register</button></NavLink>
+              <NavLink to="/Login"><button className="btn  btn-log my-2 my-sm-0" type="submit">Login</button></NavLink>
+            </form>
+            <div className='logged-in' id="logged-in">
+              <div className='row'>
+                <div className='col-md-6'>
+                <div className="user-name"><b>{name}</b></div>
+                </div>
+                <div className='col-md-6 cust-img'>
+                <div className="nav-item dropdown width">
+                  <img className="nav-link dropdown-toggle iconlog" data-bs-toggle="dropdown" src="../images/profile.png" />
+                  <div className="dropdown-menu" data-popper-placement="bottom-start">
+                    <NavLink to="/ProfileSettings" className="link"><a className="dropdown-item">My Profile</a></NavLink>
+                    <NavLink to="/Packages/Profile/General" className="link"><a className="dropdown-item" href="#">Custom Packages</a></NavLink>
+                    <NavLink to="/BookingRequest" className="link"><a className="dropdown-item" href="#">Booking Requests</a></NavLink>
+                    <div className="dropdown-divider"></div>
+                    <a className="dropdown-item" onClick={logout}>Log out</a>
+                  </div>
+                </div>
+                  </div>
+              </div>
             </div>
           </div>
-         </div>
         </div>
       </nav>
     </Wrapper>
   )
 }
-const Wrapper= styled.section`
+const Wrapper = styled.section`
+cust-img{
+}
+.logged-in{
+  display:none;
+}
 .user-name{
   color:white;
   font-size:20px; 
-  padding-right:10px;
-
+  padding-right:5px;
+  padding-top:7px;
 }
 .link{
   text-decoration:none;
@@ -442,4 +459,4 @@ const Wrapper= styled.section`
 
 `
 
-export default Navbar
+export default Navbar

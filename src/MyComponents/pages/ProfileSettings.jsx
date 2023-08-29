@@ -58,10 +58,15 @@ body {
 
 export default function ProfileSettings() {
     const sendData = async () =>{
+
+        var num = localStorage.getItem("first");
+        console.log(num);
+            localStorage.setItem("first",num+1)
+            var new_num = localStorage.getItem("first")
         localStorage.setItem("name",profname);
         let result = await fetch('http://localhost:4000/profilesetting', {
             method: 'post',
-            body: JSON.stringify({profname,profsname,profmobno,profaddress,profemail,profcountry,profstate}),
+            body: JSON.stringify({profname,profsname,profmobno,profaddress,profemail,profcountry,profstate,new_num}),
             headers: { 'Content-Type': 'application/json' },
         });
         console.log(result);
@@ -80,7 +85,6 @@ export default function ProfileSettings() {
 
     const collectData = async () => {
         var name = localStorage.getItem("name")
-
         try {
           const response = await fetch('http://localhost:4000/get_user_data', {
             method: 'post',

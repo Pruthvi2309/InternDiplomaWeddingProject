@@ -25,8 +25,12 @@ const Login = () => {
       const data = await response.json();
   
       if (data.success) {
+        localStorage.clear();
+        var name = JSON.stringify(userData["uname"])
+        console.log(name);
+        localStorage.setItem("name",name);
         navigate('/');
-        localStorage.setItem("items",JSON.stringify(userData));
+        
         
       } else {
         alert('Invalid credentials');

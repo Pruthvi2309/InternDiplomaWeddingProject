@@ -1,84 +1,203 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+
 
 function DJs() {
-  const djs = [
-    {
-      id: 1,
-      name: 'DJ John Smith',
-      address: '123 Main St, City, Country',
-      genre: 'EDM',
-      contact: 'djjohn@example.com',
-      price: 10000,
-    },
-    {
-      id: 2,
-      name: 'DJ Lisa Johnson',
-      address: '456 First Ave, Town, Country',
-      genre: 'House',
-      contact: 'djlisa@example.com',
-      price: 12000,
-    },
-    {
-      id: 3,
-      name: 'DJ Max Williams',
-      address: '789 Lake Rd, Village, Country',
-      genre: 'Hip-Hop',
-      contact: 'djmax@example.com',
-      price: 15000,
-    },
-    // Add more DJs here...
+  const [data,setData]=useState([]);
+  const [range,setRange] = useState(-1);
+  // const [radio,setRadio] = useState(-1);
+  // const [check,setCheck] = useState([]);
+  const [drop,setDrop] = useState("");
+  const [search,setSearch] = useState("");
+  const range_arr = ["10000-25000","25000-50000","50000-75000","75000-90000","90000-115000","115000+"];
+  const rating_arr = ["<3","3-4","4-4.5","4.5-4.8","4.8-5"];
+  const budget_arr = ["<=25K","25K-50K","50K-1L","1L-2L","2L-5L","5L+"];
+  const [selectedVenues, setSelectedVenues] = useState([]);
+  const collectData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/dj', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      const responseData = await response.json(); // Parse the response JSON
+      console.log('Response data from server:', responseData); // Debugging line
+  
+      setData(responseData); // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const options=['Nadiad', 'Anand' ,'Ahmedabad', 'Varsad','Surat','Rajkot'];
+
+  const filters = () => {
+    // Add your filter logic here
+    console.log('Applying filters...');
+    console.log('Range:', range);
+    // console.log('Rating:', radio);
+    // console.log('Selected Venues:', selectedVenues);
+    console.log('drop:', drop);
+    console.log("sending data");
+    // if(range!=-1)
+    // document.getElementById("filter1").style="display:block";
+    // if(radio!=-1)
+    // document.getElementById("filter2").style="display:block";
+    // if(check.length != 0)
+    // document.getElementById("filter3").style="display:block";
+    // if(budget!=-1)
+    // document.getElementById("filter4").style="display:block";
+    sendData();
+  };
+  const reset = () => {
+    // document.getElementById("filter1").style="display:none";
+    // document.getElementById("filter2").style="display:none";
+    // document.getElementById("filter3").style="display:none";
+    // document.getElementById("filter4").style="display:none";
+    collectData();
+  };
+  useEffect(()=>{ 
+      console.log("collecting data");
+      collectData();
+      
+    // toggleVenue();
+  },[]);
+
+  // useEffect(() => {
+  //   console.log('Selected Venues:', selectedVenues);
+  //   setCheck(selectedVenues);
+  // }, [selectedVenues]);
+
+  
+  const toggleVenue = (venue) => {
+    setSelectedVenues(prevSelectedVenues => {
+      if (prevSelectedVenues.includes(venue)) {
+        return prevSelectedVenues.filter(v => v !== venue);
+      } else {
+        return [...prevSelectedVenues, venue];
+      }
+      
+    });
+    //  console.log(selectedVenues);
+  }
+
+  const venueTypes = [
+    '4 Star+ Hotels', 'Banquet Halls', 'FarmHouses', 
+    'Hotel', 'Resort', 'Restaurant', 
+    'Destination Wedding', 'Heritage Property'
   ];
-
-  const itemsPerPage = 3;
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(djs.length / itemsPerPage);
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  
+  
+  const sendData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/filter_dj', {
+        method: 'post',
+        body: JSON.stringify({ range, drop }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  const searchData = async () => {
+    console.log(search);
+    try {
+      const response = await fetch('http://localhost:4000/djsearch', {
+        method: 'post',
+        body: JSON.stringify({ search }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setData(data);
+      } else {
+        console.error('API response not okay:', response.status);
+      } 
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentDJs = djs.slice(startIndex, endIndex);
-
-  // List of cities for the dropdown
-  const cities = ['Mumbai', 'Bangalore', 'Delhi', 'Chennai', 'Ahmedabad'];
 
   return (
     <Wrapper>
-      <div className="top-container btn-filters">
-      <a className="btn btn-primary " data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+      <div className='top-container'>
+      <a className="btn btn-primary btn-filters" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
         Filters
       </a>
-      </div>
+
       <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div className="offcanvas-header">
           <h1 className="offcanvas-title" id="offcanvasExampleLabel">Filters</h1>
           <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div className="offcanvas-body">
-          <fieldset className="form-group">
-            <legend className="mt-4">Ranges</legend>
-            <label htmlFor="customRange1" className="form-label">Example range</label>
-            <input type="range" className="form-range" id="customRange1" />
-          </fieldset>
-          <label htmlFor="cityDropdown" className="form-label">Select City</label>
-          <div className="dropdown" style={{ marginBottom: '15px' }}>
-            <select className="form-select" id="cityDropdown">
-              {cities.map((city, index) => (
-                <option key={index}>{city}</option>
-              ))}
-            </select>
-          </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+        <fieldset className="form-group">
+            <div className='row'>
+                <div className='col-md-12'>
+                  Select Price Range
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-md-12'>
+                  <br />
+                  <input type="range" className="form-range" min="0" max="5" step="1" id="customRange3" value={range} onChange={(e)=>setRange(e.target.value)} />
+                </div>
+              </div>
+              <div className='row'>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>10000-25000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>25000-50000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicators'><b>50000-75000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>75000-90000</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='oneline'><b>90000-11500</b></div>
+                </div>
+                <div className="col-md-2 indi-width">
+                  <div className='indicator'><b>11500+</b></div>
+                </div>
+              </div>
+              </fieldset>
+              <div className='row'>
+              <div className='col-md-12'>
+                  Select City
+                </div>
+                <div className='col-md-12'>
+                  <br />
+                  <select
+                     className="form-control width" 
+                     id="country"
+                     onChange={(e) => setDrop(e.target.value)}
+                    defaultValue={drop}
+                   >
+                    {options.map((option, idx) => (
+                     <option key={idx}>{option}</option>
+                   ))}
+                  </select>
+                </div>
+                </div>
+                <br/>
+                <button className="btn btn-lg btn-primary" type="button" onClick={filters}>Apply</button> &nbsp;
+                      <button type="button" className="btn btn-outline-primary" onClick={reset}>Reset</button>
         </div>
       </div>
-
+      </div>
       <br />
       <div className="container">
         <div className="row">
@@ -87,35 +206,37 @@ function DJs() {
           </div>
           <div className="col-md-2">
             <input
-              className="form-control me-sm-2 mob-width"
+              className="form-control me-sm-2 mob-width value={search} onChange={e=>setSearch(e.target.value)}"
               type="search"
               placeholder="Search"
+              value={search} onChange={e=>setSearch(e.target.value)}
             />
           </div>
           <div className="col-md-2">
-            <button className="btn btn-primary mob-btn" type="submit">
+            <button className="btn btn-primary mob-btn" type="submit" onClick={searchData}>
               Search
             </button>
           </div>
         </div>
         <div className="row">
-          {currentDJs.map((dj) => (
-            <div className="col-md-4" key={dj.id}>
+        {data.map((curElem) => {
+               const img = "venues/"+curElem.vid + ".jpg";
+               const path = `${curElem.dname}`;
+
+                // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
+                return (
+            <div className="col-md-4" key={curElem.did}>
+                              <NavLink to={path} className="link">
+
               <div className="card">
                 <img
-                  src="images\download (1).jfif" // Replace with DJ image
+                  src="images\download (1).jfif" 
                   className="card-img-top"
-                  alt={dj.name}
                 />
                 <div className="card-body">
-                  <h5 className="card-title">{dj.name}</h5>
-                  <p className="address">{dj.address}</p>
-                  <p className="type">{dj.genre}</p>
-                  <p className="price">Price: ₹{dj.price} onwards</p>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <p className="veg-price">{dj.contact}</p>
-                    </div>
+                  <h5 className="card-title">{curElem.dname}</h5>
+                  <p className="address">{curElem.dcity}</p>
+                  <p className="price">Price: ₹{curElem.dprice} onwards</p>
                   </div>
                   <div className="row">
                     <div className="col-md-6">
@@ -127,60 +248,95 @@ function DJs() {
                     </div>
                   </div>
                 </div>
+                </NavLink>
               </div>
-            </div>
-          ))}
+
+           );
+          })}
         </div>
       </div>
-      <div className="row">
-        <div className="col-md-12 pagin">
-          <ul className="pagination justify-content-center">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={handlePrevPage}>
-                &laquo;
-              </button>
-            </li>
-            <li className="page-item">
-              <button className="page-link">{currentPage}</button>
-            </li>
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={handleNextPage}>
-                &raquo;
-              </button>
-            </li>
-          </ul>
+      <div className="row pagin-pad">
+          <div className="col-md-12 pagin">
+            <ul className="pagination justify-content-center">
+              <li className="page-item disabled">
+                <a className="page-link" href="#">
+                  &laquo;
+                </a>
+              </li>
+              <li className="page-item active">
+                <a className="page-link" href="#">
+                  1
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  2
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  3
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  4
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  5
+                </a>
+              </li>
+              <li className="page-item">
+                <a className="page-link" href="#">
+                  &raquo;
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+        
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  .btn-filters {
-    padding: 10px 20px;
+.link{
+  text-decoration:none;
+}
+.top-container{
+ 
+  padding-top: 60px;
+  height:127px;
+  // padding-left: 40px;
+  // margin-bottom: 80px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+.pagin-pad{
+  margin-top:30px;
+}
+    .btn-filters {
+      padding: 10px 20px;
+      margin: 20px; /* Adjust margin value as needed */
+    }
+
+    .btn-primary {
+      background-color: #e61041;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
   }
 
-  .btn-primary {
-    background-color: #e61041;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-}
-
-  .btn-primary:hover {
+    .btn-primary:hover {
     background-color: #c30733;
 }
-.top-container {
-  padding-top: 80px;
-  padding-bottom: 10px;
-  // padding-left: 00px; /* Adjust this value according to your preference */
-  padding-right: 1000px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+
 @media only screen and (max-width:768px){
   .mob-width{
     width:200px;

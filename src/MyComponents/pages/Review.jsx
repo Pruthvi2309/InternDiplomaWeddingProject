@@ -87,10 +87,9 @@ const StarRatingSystem = () => {
   
   var rdate = dd + '/' + mm + '/' + yyyy;
   console.log(rdate);
-  var items = localStorage.getItem("items");
-  console.log(items);
-  const uname = JSON.parse(items);
-  const rname = uname["uname"];
+  var items = localStorage.getItem("name");
+  // console.log(items);
+  const rname = items.slice(1,-1);
   console.log(rname);
   
 

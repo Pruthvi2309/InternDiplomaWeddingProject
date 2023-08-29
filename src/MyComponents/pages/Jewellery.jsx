@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 function jwellery() {
 
@@ -277,9 +278,11 @@ function jwellery() {
               <div className="row">
               {data.map((curElem) => {
                const img = "venues/"+curElem.vid + ".jpg";
+               const path = `${curElem.jname}`;
                 // const { vid, vname, vlocation, vrating, vcategory, veg_price, non_price, rooms, guest_capacity } = curElem;
                 return (
                 <div className="col-md-4" key={curElem.jid}>
+                   <NavLink to={path} className="link">
                   <div className='card'>
                     <div className="rating">{curElem.jrating}</div>
                     <img src="images/j2.jpg" className="card-img-top" alt="..." />
@@ -304,6 +307,7 @@ function jwellery() {
                       </div>
                     </div>
                   </div>
+                  </NavLink>
                 </div>
                 );})}
               </div>
@@ -355,6 +359,9 @@ function jwellery() {
 }
 
         const Wrapper = styled.div`
+        .link{
+          text-decoration:none;
+        }
         /* Your existing styles and the added styles htmlFor the filter window */
         .cont1 ,.cont2 ,.cont3{
           width:100%;
